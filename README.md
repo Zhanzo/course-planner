@@ -6,11 +6,11 @@ Our idea is a course planner where you can insert courses that you are intereste
 such as if the courses collide (same block, same period) or if the user will not reach the required amount of credits. The course planner will also tell the user if it has selected two similar courses that cannot be included in the degree.
 
 The user can sign in to the website using for instance Facebook/Google and then it will see its list of course plans (if it has any).
-The course planner has tabs for each of the periods included in a master's degree.
-The left side of the course planner has a list of courses for the selected period and a course can then be dragged to a "box" on the right side of the screen to select the course. Above this box is information presented that shows the amount of credits.
+The left side of the course planner has a list of courses and a course can then be dragged to a "box" on the right side of the screen to select the course. Above this box is information presented that shows the amount of credits.
 If two courses collide or if they have the same content but different course codes, then they will be marked red and some information about this will be displayed.
 
-An inspiratory example is https://www.youtube.com/watch?v=MvTUL9Qku5A, but with drag-and-drop instead of just clicking a plus-sign.
+Here is an example of the structure of the application (color choice and similar are not set in stone):
+![](assets/CoursePlannerExample.png)
 
 ## Technological specification
 
