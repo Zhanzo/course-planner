@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import {
+  SocialAuthService,
+  GoogleLoginProvider,
+  SocialUser,
+} from 'angularx-social-login';
 import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/services/user.service';
 
@@ -8,37 +14,25 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./log-in.component.css'],
 })
 export class LogInComponent implements OnInit {
-  user: User = {
-    username: '',
-    password: '',
-    isSignedIn: false,
-  };
-  newUser: User = {
-    username: '',
-    password: '',
-    isSignedIn: false,
-  };
-  submitted = false;
-  userMessage = '';
-  newUserMessage = '';
+  user?: SocialUser;
+  loggedIn?: boolean;
 
-  constructor(private userService: UserService) {}
+  constructor(private authService: SocialAuthService) {}
 
-  ngOnInit(): void {}
-
-  logIn(): void {
-    if (this.userService.signIn(this.user)) {
-      this.submitted = true;
-    } else {
-      this.userMessage = 'User does not exist!';
-    }
+  ngOnInit(): void {
+    this.authService.authState.subscribe((user) => {
+      this.user = user;
+      this.loggedIn = user != null;
+    });
   }
 
-  createUser(): void {
-    if (this.userService.create(this.newUser)) {
-      this.newUserMessage = 'User created successfully';
-    } else {
-      this.newUserMessage = 'User already exists!';
-    }
+  createNewCoursePlan(): void {}
+
+  signInWithGoogle(): void {
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+  }
+
+  signOut(): void {
+    this.authService.signOut();
   }
 }
