@@ -14,4 +14,4 @@ Here is an example of the structure of the application (color choice and similar
 
 ## Technological specification
 
-The client framework that we are going to use is Angluar, and the server/backend framework is Django. We are also going to use Jenkins and Selenium for testing and deploying the application to Heroku.
+The client framework that we are going to use is Angluar, and the server/backend framework is Django. We are also going to use Jenkins and Selenium for testing and deploying the application to Heroku. We are going to use PostgreSQL for the database, and we might use Postman for initial testing.
