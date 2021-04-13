@@ -12,16 +12,4 @@
       </button>
     </div>
   </div>
-
-  <div *ngIf="loggedIn && user">
-    <h2>Welcome: {{ user.name }}</h2>
-
-    <h2>Course Plans</h2>
-
-    <button class="btn btn-success" (click)="createNewCoursePlan()">
-      New Course Plan
-    </button>
-
-    <button class="btn btn-danger" (click)="signOut()">Sign Out</button>
-  </div>
 </div>

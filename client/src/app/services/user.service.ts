@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from 'src/app/models/user.model';
+import {SocialUser} from 'angularx-social-login';
 
 @Injectable({
   providedIn: 'root',
@@ -9,30 +10,44 @@ export class UserService {
 
   constructor() {}
 
-  create(user: User): boolean {
-    for (let _user of this.users) {
-      if (_user.username == user.username) {
-        return false;
-      }
-    }
-    this.users.push(user);
-    return true;
-  }
-
-  get(username: string): User | null {
-    for (let _user of this.users) {
-      if ((_user.username = username)) {
-        return _user;
+  get(email: string): User | null {
+    for (const user of this.users) {
+      if ((user.email === email)) {
+        return user;
       }
     }
     return null;
   }
 
-  signIn(user: User): boolean {
-    for (let _user of this.users) {
-      if (_user.username == user.username && _user.password == user.password) {
-        _user.isSignedIn = true;
-        return true;
+  logIn(socialUser: SocialUser): boolean {
+    for (const user of this.users) {
+      if (user.email === socialUser.email) {
+        if (user.token === socialUser.authToken) {
+          user.isLoggedIn = true;
+          return true;
+        }
+        else {
+          user.token = socialUser.authToken;
+          user.isLoggedIn = true;
+          return true;
+        }
+      }
+    }
+
+    const newUser = new User(socialUser.email, socialUser.authToken);
+    newUser.isLoggedIn = true;
+    this.users.push(newUser);
+    return true;
+  }
+
+  logOut(user: User): boolean {
+    for (const signedInUser of this.users) {
+      if (signedInUser.email === user.email) {
+        if (signedInUser.token === user.token) {
+          signedInUser.isLoggedIn = false;
+          signedInUser.token = '';
+          return true;
+        }
       }
     }
     return false;

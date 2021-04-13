@@ -1,0 +1,22 @@
+<div>
+<div *ngIf="user">
+    <h2>Course Plans</h2>
+    <div>
+      <ul class="list-group">
+        <li
+          class="list-group-item"
+          *ngFor="let coursePlan of user.coursePlans">
+          <button class="btn btn-success" (click)="viewCoursePlan(coursePlan.name)">{{ coursePlan.name }}</button>
+        </li>
+      </ul>
+    </div>
+
+    <br/>
+
+    <button class="btn btn-success" (click)="createNewCoursePlan()">
+      New Course Plan
+    </button>
+
+    <button class="btn btn-danger" (click)="signOut()">Sign Out</button>
+  </div>
+</div>

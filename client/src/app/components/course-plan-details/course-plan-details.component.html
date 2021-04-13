@@ -1,0 +1,13 @@
+<div>
+  <div *ngIf="coursePlan">
+    <h1>{{ coursePlan.name }}</h1>
+    <h2>Courses:</h2>
+    <ul class="list-group">
+      <li
+        class="list-group-item"
+        *ngFor="let course of coursePlan.courses">
+        {{ course }}
+      </li>
+    </ul>
+  </div>
+</div>

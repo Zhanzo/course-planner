@@ -5,7 +5,6 @@ import {
   GoogleLoginProvider,
   SocialUser,
 } from 'angularx-social-login';
-import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -17,7 +16,7 @@ export class LogInComponent implements OnInit {
   user?: SocialUser;
   loggedIn?: boolean;
 
-  constructor(private authService: SocialAuthService) {}
+  constructor(private authService: SocialAuthService, private userService: UserService, private router: Router) {}
 
   ngOnInit(): void {
     this.authService.authState.subscribe((user) => {
@@ -26,13 +25,15 @@ export class LogInComponent implements OnInit {
     });
   }
 
-  createNewCoursePlan(): void {}
 
   signInWithGoogle(): void {
-    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
-  }
-
-  signOut(): void {
-    this.authService.signOut();
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then(
+      user => {
+        this.userService.logIn(user);
+        this.router.navigateByUrl('user-details/', { state: { email: user.email } });
+      },
+      error => {
+        console.log(error);
+      });
   }
 }

@@ -11,9 +11,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LogInComponent } from './components/log-in/log-in.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { UserDetailsComponent } from './components/user-details/user-details.component';
+import { CoursePlanDetailsComponent } from './components/course-plan-details/course-plan-details.component';
 
 @NgModule({
-  declarations: [AppComponent, LogInComponent],
+  declarations: [AppComponent, LogInComponent, UserDetailsComponent, CoursePlanDetailsComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
