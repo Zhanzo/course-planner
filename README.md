@@ -23,5 +23,5 @@ semesters in a master's programme/profile (color choice and similar are not set 
 ## Technological specification
 
 The client framework that we are going to use is Angular, and the server/backend framework is Django. We are also going
-to use Jenkins and Selenium for testing and deploying the application to Heroku. We are going to use PostgreSQL for the
-database, and we might use Postman for initial testing.
+to use Gitlab CI/CD and Selenium for testing and deploying the application to Heroku. We are going to use PostgreSQL for
+the database, and we might use Postman for initial testing.
