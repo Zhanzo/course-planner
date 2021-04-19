@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { User} from '../../models/user.model';
+import {Component, OnInit} from '@angular/core';
+import {User} from '../../models/user.model';
 import {SocialAuthService} from 'angularx-social-login';
 import {UserService} from '../../services/user.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -18,14 +18,15 @@ export class UserDetailsComponent implements OnInit {
               private router: Router) {
     const state = this.router.getCurrentNavigation()?.extras.state;
     if (state) {
-      const user = this.userService.get(state.email);
-      if (user) {
-        this.user = user;
-        return;
-      }
+      this.userService.get(state.email).subscribe(
+        response => {
+          this.user = response;
+        }, error => {
+          console.log(error);
+          this.router.navigateByUrl('');
+        }
+      );
     }
-    this.router.navigateByUrl('');
-
   }
 
   ngOnInit(): void {
@@ -39,7 +40,12 @@ export class UserDetailsComponent implements OnInit {
 
   viewCoursePlan(name: string): void {
     if (this.user) {
-      this.router.navigateByUrl('course-plan-details/', {state: {email: this.user.email, coursePlanName: name}}).then(r => {
+      this.router.navigateByUrl('course-plan-details/', {
+        state: {
+          email: this.user.email,
+          coursePlanName: name
+        }
+      }).then(r => {
         console.log(r);
       }, error => {
         console.log(error);

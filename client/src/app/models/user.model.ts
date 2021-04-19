@@ -1,16 +1,17 @@
-import {CoursePlan} from './coursePlan.model';
-
 export class User {
-  email = '';
-  token = '';
-  isLoggedIn = false;
-  coursePlans: Array<CoursePlan> = [new CoursePlan('Fall semester'), new CoursePlan('Spring semester')];
+  email?: string;
+  token?: string;
+  isLoggedIn?: boolean;
 
-  constructor(email: string, token: string) {
+  // coursePlans: Array<CoursePlan> = [new CoursePlan('Fall semester'), new CoursePlan('Spring semester')];
+
+  constructor(email: string, token: string, isLoggedIn: boolean) {
     this.email = email;
     this.token = token;
+    this.isLoggedIn = isLoggedIn;
   }
 
+  /*
   getCoursePlan(name: string): CoursePlan | null {
     for (const coursePlan of this.coursePlans) {
       if (coursePlan.name === name) {
@@ -20,4 +21,5 @@ export class User {
 
     return null;
   }
+   */
 }

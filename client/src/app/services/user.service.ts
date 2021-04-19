@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { User } from 'src/app/models/user.model';
+import {Injectable} from '@angular/core';
+import {User} from 'src/app/models/user.model';
 import {SocialUser} from 'angularx-social-login';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
-const baseUrl = 'http://localhost:8080/api/tutorials';
+const baseUrl = 'http://localhost:8080/api/users';
 
 @Injectable({
   providedIn: 'root',
@@ -12,75 +12,41 @@ const baseUrl = 'http://localhost:8080/api/tutorials';
 export class UserService {
   users: Array<User> = [];
 
-//  constructor(private http: HttpClient) { }
-constructor() { }
-
-  get(email: string): User | null {
-    for (const user of this.users) {
-      if ((user.email === email)) {
-        return user;
-      }
-    }
-    return null;
+  constructor(private http: HttpClient) {
   }
-  
-/*
+
   get(email: string): Observable<User> {
     return this.http.get(`${baseUrl}/${email}`);
   }
-*/
 
-/*
-  logIn(socialUser: SocialUser): boolean {
-    this.get(socialUser.email).subscribe(user=>{
-      if (user.token === socialUser.authToken)
-    })
-    if (user.email )
-    for (const user of this.users) {
-      if (user.email === socialUser.email) {
-        if (user.token === socialUser.authToken) {
-          user.isLoggedIn = true;
-          return true;
-        }
-        else {
-          user.token = socialUser.authToken;
-          user.isLoggedIn = true;
-          return true;
-        }
-      }
-    }
-    
-    const newUser = new User(socialUser.email, socialUser.authToken);
-    newUser.isLoggedIn = true;
-    this.users.push(newUser);
-    return true;
-  }
-*/
- 
-  logIn(socialUser: SocialUser): boolean {
-    console.log(socialUser.authToken);
-    for (const user of this.users) {
-      if (user.email === socialUser.email) {
-        if (user.token === socialUser.authToken) {
-          user.isLoggedIn = true;
-          return true;
-        }
-        else {
-          user.token = socialUser.authToken;
-          user.isLoggedIn = true;
-          return true;
-        }
-      }
-    }
-    
-    const newUser = new User(socialUser.email, socialUser.authToken);
-    newUser.isLoggedIn = true;
-    this.users.push(newUser);
-    return true;
+
+  create(data: any): Observable<User> {
+    return this.http.post(`${baseUrl}`, data);
   }
 
+  signIn(socialUser: SocialUser): void {
+    this.get(socialUser.email).subscribe(
+      user => {
+        console.log(user);
+      }, () => {
+        const data = {
+          email: socialUser.email,
+          token: socialUser.authToken
+        };
 
-  logOut(user: User): boolean {
+        this.create(data).subscribe(
+          user => {
+            console.log(user);
+          }, error => {
+            console.log(error);
+          }
+        );
+      }
+    );
+  }
+
+  logOut(user: User):
+    boolean {
     for (const signedInUser of this.users) {
       if (signedInUser.email === user.email) {
         if (signedInUser.token === user.token) {
@@ -93,44 +59,3 @@ constructor() { }
     return false;
   }
 }
-/*
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Tutorial } from '../models/tutorial.model';const baseUrl = 'http://localhost:8080/api/tutorials';
-
-@Injectable({
-  providedIn: 'root'})
-  export class TutorialService 
-  {
-    constructor(private http: HttpClient) { }
-    
-    getAll(): Observable<Tutorial[]> {
-      return this.http.get<Tutorial[]>(baseUrl);
-    }
-    
-    get(id: any): Observable<Tutorial> {
-      return this.http.get(`${baseUrl}/${id}`);
-    }
-    
-    create(data: any): Observable<any> {
-      return this.http.post(baseUrl, data);
-    }
-    
-    update(id: any, data: any): Observable<any> {
-      return this.http.put(`${baseUrl}/${id}`, data);
-    }
-    
-    delete(id: any): Observable<any> {
-      return this.http.delete(`${baseUrl}/${id}`);
-    }
-    
-    deleteAll(): Observable<any> {
-      return this.http.delete(baseUrl);
-    }
-    
-    findByTitle(title: any): Observable<Tutorial[]> {
-      return this.http.get<Tutorial[]>(`${baseUrl}?title=${title}`);
-    }
-  }
-  */

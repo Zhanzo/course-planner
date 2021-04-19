@@ -1,7 +1,8 @@
 <div>
-<div *ngIf="user">
+  <div *ngIf="user">
     <h2>Course Plans</h2>
     <div>
+      <!--
       <ul class="list-group">
         <li
           class="list-group-item"
@@ -9,14 +10,15 @@
           <button class="btn btn-success" (click)="viewCoursePlan(coursePlan.name)">{{ coursePlan.name }}</button>
         </li>
       </ul>
+      -->
     </div>
 
     <br/>
 
-    <button class="btn btn-success" (click)="createNewCoursePlan()">
+    <button (click)="createNewCoursePlan()" class="btn btn-success">
       New Course Plan
     </button>
 
-    <button class="btn btn-danger" (click)="signOut()">Sign Out</button>
+    <button (click)="signOut()" class="btn btn-danger">Sign Out</button>
   </div>
 </div>
