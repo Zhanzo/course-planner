@@ -6,11 +6,11 @@ test:
   stage: test
   script:
     - apt-get update -qy
-    - echo "Checking python versions."
-    - python3 -V
-    - python -V
+    - echo "Install python3."
+    - apt-get install -y python3-pip python3-dev
+    - echo "Install the required python packages."
     - cd server
-    - pip install -r requirements.txt
+    - pip3 install -r requirements.txt
     - echo "Done"
 
 deploy:
