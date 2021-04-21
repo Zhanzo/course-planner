@@ -6,7 +6,9 @@ test:
   stage: test
   script:
     - apt-get update -qy
-    - apt-get install -y python-dev python-pip
+    - echo "Checking python versions."
+    - python3 -V
+    - python -V
     - cd server
     - pip install -r requirements.txt
     - echo "Done"
