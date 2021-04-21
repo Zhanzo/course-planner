@@ -1,0 +1,19 @@
+stages:
+  - test
+  - deploy
+
+test:
+  stage: test
+  script:
+    - apt-get update -qy
+    - echo "Install python3."
+    - apt-get install -y python3-pip python3-dev
+    - echo "Install the required python packages."
+    - cd server
+    - pip3 install -r requirements.txt
+    - echo "Done"
+
+deploy:
+  stage: deploy
+  script:
+    - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
