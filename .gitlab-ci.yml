@@ -1,6 +1,14 @@
+image: node:latest
+
 stages:
   - test
-  - deploy
+  - staging
+  - production
+
+before-script:
+  - apt-get update -qy
+  - apt-get install -y ruby-dev python3-pip python3-dev
+  - gem install dpl
 
 test:
   stage: test
@@ -14,7 +22,20 @@ test:
     - python3 manage.py test tests
     - echo "Done"
 
-deploy:
-  stage: deploy
+staging:
+  type: deploy
+  stage: staging
+  image: ruby:latest
   script:
-    - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
+    - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
+  only:
+    - staging
+
+production:
+  type: deploy
+  stage: production
+  image: ruby:latest
+  script:
+    - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
+  only:
+    master
