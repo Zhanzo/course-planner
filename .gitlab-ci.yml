@@ -5,9 +5,9 @@ stages:
   - staging
   - production
 
-before-script:
+before_script:
   - apt-get update -qy
-  - apt-get install -y ruby-dev python3-pip python3-dev
+  - apt-get install -y ruby-dev
   - gem install dpl
 
 test:
