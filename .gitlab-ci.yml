@@ -1,17 +1,17 @@
-default:
-  image: ubuntu:21.04
+stages:
+  - test
+  - deploy
 
-build-job:
-  stage: build
-  script:
-    - echo "Hello, $GITLAB_USER_LOGIN!"
-
-test-job1:
+test:
   stage: test
   script:
-    - echo "This job tests something"
+    - apt-get update -qy
+    - apt-get install -y python-dev python-pip
+    - cd server
+    - pip install -r requirements.txt
+    - echo "Done"
 
-deploy-prod:
+deploy:
   stage: deploy
   script:
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
