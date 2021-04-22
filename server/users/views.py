@@ -1,4 +1,6 @@
 from django.http import JsonResponse
+from django.shortcuts import render
+from django.views.generic import TemplateView
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
@@ -6,7 +8,10 @@ from users.models import User
 from users.serializers import UserSerializer
 
 
-# Create your views here.
+class HomePageView(TemplateView):
+    def get(self, request, **kwargs):
+        return render(request, 'index.html', context=None)
+
 
 @api_view(['GET', 'POST', 'DELETE'])
 def user_list(request):

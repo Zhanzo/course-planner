@@ -1,4 +1,5 @@
 .idea/
 .env/
+staticfiles/
 db.sqlite3
 *.pyc

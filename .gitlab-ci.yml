@@ -13,9 +13,6 @@ before-script:
 test:
   stage: test
   script:
-    - apt-get update -qy
-    - echo "Install python3."
-    - apt-get install -y python3-pip python3-dev
     - echo "Install the required python packages."
     - cd server
     - pip3 install -r requirements.txt
@@ -27,6 +24,12 @@ staging:
   stage: staging
   image: ruby:latest
   script:
+    - apt-get install -y npm
+    - cd client
+    - npm i
+    - npm build
+    - cd ../server
+    - python3 manage.py collectstatic
     - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
   only:
     - staging
@@ -37,5 +40,4 @@ production:
   image: ruby:latest
   script:
     - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
-  only:
-    master
+  only: master

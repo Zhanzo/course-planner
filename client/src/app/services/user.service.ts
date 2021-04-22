@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {User} from 'src/app/models/user.model';
-import {SocialUser} from 'angularx-social-login';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { User } from 'src/app/models/user.model';
+import { SocialUser } from 'angularx-social-login';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-const baseUrl = 'http://localhost:8080/api/users';
+const baseUrl = 'http://localhost:5000/api/users';
 
 @Injectable({
   providedIn: 'root',
@@ -12,13 +12,11 @@ const baseUrl = 'http://localhost:8080/api/users';
 export class UserService {
   users: Array<User> = [];
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   get(email: string): Observable<User> {
     return this.http.get(`${baseUrl}/${email}`);
   }
-
 
   create(data: any): Observable<User> {
     return this.http.post(`${baseUrl}`, data);
@@ -26,18 +24,20 @@ export class UserService {
 
   signIn(socialUser: SocialUser): void {
     this.get(socialUser.email).subscribe(
-      user => {
+      (user) => {
         console.log(user);
-      }, () => {
+      },
+      () => {
         const data = {
           email: socialUser.email,
-          token: socialUser.authToken
+          token: socialUser.authToken,
         };
 
         this.create(data).subscribe(
-          user => {
+          (user) => {
             console.log(user);
-          }, error => {
+          },
+          (error) => {
             console.log(error);
           }
         );
@@ -45,8 +45,7 @@ export class UserService {
     );
   }
 
-  logOut(user: User):
-    boolean {
+  logOut(user: User): boolean {
     for (const signedInUser of this.users) {
       if (signedInUser.email === user.email) {
         if (signedInUser.token === user.token) {
