@@ -4,7 +4,8 @@
   "main": "main.js",
   "repository": "",
   "scripts": {
-    "heroku-prebuild": "NODE_ENV=production cd client/ && npm install"
+    "heroku-prebuild": "cd client/ && npm install",
+    "heroku-postbuild": "cd client/ && ng build --prod"
   },
   "engines": {
     "node": "15.14.0",
