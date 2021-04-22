@@ -1,0 +1,16 @@
+{
+  "name": "course_planner",
+  "version": "0.0.0",
+  "main": "main.js",
+  "repository": "",
+  "scripts": {
+    "heroku-prebuild": "NODE_ENV=production cd client/ && npm install"
+  },
+  "engines": {
+    "node": "15.14.0",
+    "npm": "7.7.6"
+  },
+  "cacheDirectories": [
+    "client/node_modules"
+  ]
+}
