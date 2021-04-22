@@ -9,9 +9,7 @@ before_script:
   - apt-get update -qy
   - apt-get install -y ruby-dev libpq-dev
   - gem install dpl
-  - cd server
   - pip3 install -r requirements.txt
-  - cd ..
 
 test:
   stage: test
