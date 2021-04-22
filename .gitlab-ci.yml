@@ -24,11 +24,12 @@ staging:
   type: deploy
   stage: staging
   script:
-    - cd client
-    - npm i
-    - npm run build
-    - cd ../server
-    - python3 manage.py collectstatic
+    #    - cd client
+    #    - npm i
+    #    - npm run build
+    #    - cd ../server
+    #    - python3 manage.py collectstatic
+    #    - cd ..
     - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
   only:
     - staging
