@@ -1,5 +1,3 @@
-image: nikolaik/python-nodejs:latest
-
 stages:
   - test
   - staging
@@ -7,27 +5,23 @@ stages:
 
 before_script:
   - apt-get update -qy
-  - apt-get install -y ruby-dev libpq-dev
-  - gem install dpl
-  - pip3 install -r requirements.txt
 
 test:
   stage: test
+  image: python:latest
   script:
+    - apt-get install -y libpq-dev
+    - pip install -r requirements.txt
     - cd server
-    - python3 manage.py test tests
+    - python manage.py test tests
     - echo "Done"
 
 staging:
   type: deploy
   stage: staging
+  image: ruby:latest
   script:
-    #    - cd client
-    #    - npm i
-    #    - npm run build
-    #    - cd ../server
-    #    - python3 manage.py collectstatic
-    #    - cd ..
+    - gem install dpl
     - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
   only:
     - staging
@@ -35,7 +29,9 @@ staging:
 production:
   type: deploy
   stage: production
+  image: ruby:latest
   script:
+    - gem install dpl
     - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
   only:
     - master
