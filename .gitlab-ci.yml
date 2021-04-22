@@ -1,21 +1,21 @@
-image: node:latest
+image: ubuntu:latest
 
 stages:
   - test
   - staging
   - production
 
-before-script:
+before_script:
   - apt-get update -qy
-  - apt-get install -y ruby-dev python3-pip python3-dev
+  - apt-get install -y ruby-dev python3-dev python3-pip
   - gem install dpl
+  - cd server
+  - pip3 install -r requirements.txt
 
 test:
   stage: test
   script:
-    - echo "Install the required python packages."
     - cd server
-    - pip3 install -r requirements.txt
     - python3 manage.py test tests
     - echo "Done"
 
@@ -40,4 +40,5 @@ production:
   image: ruby:latest
   script:
     - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
-  only: master
+  only:
+    - master
