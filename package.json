@@ -4,7 +4,7 @@
   "main": "main.js",
   "repository": "",
   "scripts": {
-    "heroku-prebuild": "cd client/ && npm install",
+    "heroku-prebuild": "cd client/ && npm install && npm install -g angular-cli",
     "heroku-postbuild": "cd client/ && ng build --prod"
   },
   "engines": {
