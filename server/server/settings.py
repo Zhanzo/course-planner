@@ -21,12 +21,12 @@ CLIENT_BASE_DIR = BASE_DIR.joinpath('../client')
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY','django-insecure-l+i)8cs*z61$#p!!!-d0)64-roqoc1(0y4wnf_r1exsf(clg!v')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-l+i)8cs*z61$#p!!!-d0)64-roqoc1(0y4wnf_r1exsf(clg!v')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DJANGO_DEBUG', True)
+DEBUG = os.environ.get("DEBUG", True)
 
-ALLOWED_HOSTS = ['.herokuapp.com', 'localhost']
+ALLOWED_HOSTS = ['.herokuapp.com', 'localhost', '0.0.0.0']
 
 # Application definition
 
