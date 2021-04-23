@@ -4,7 +4,7 @@ import { SocialUser } from 'angularx-social-login';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-const baseUrl = 'http://localhost:5000/api/users';
+const baseUrl = '/api/users';
 
 @Injectable({
   providedIn: 'root',
