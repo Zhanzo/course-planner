@@ -5,7 +5,7 @@
   "repository": "",
   "scripts": {
     "heroku-prebuild": "cd client/ && npm install && npm install -g @angular/cli",
-    "heroku-postbuild": "cd client/ && ng build --prod --output-hashing=none --aot"
+    "heroku-postbuild": "cd client/ && npm run build"
   },
   "engines": {
     "node": "15.14.0",
