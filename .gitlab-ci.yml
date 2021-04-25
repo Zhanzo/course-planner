@@ -10,7 +10,6 @@ test:
   stage: test
   image: python:latest
   script:
-    - apt-get install -y libpq-dev
     - pip install -r requirements.txt
     - cd server
     - python manage.py test tests
