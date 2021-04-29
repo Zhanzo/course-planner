@@ -26,7 +26,6 @@ export class LogInComponent implements OnInit {
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then(
       user => {
         this.userService.signIn(user);
-        this.router.navigateByUrl('user-details/', {state: {email: user.email}});
       },
       error => {
         console.log(error);

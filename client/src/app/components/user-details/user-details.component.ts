@@ -16,15 +16,16 @@ export class UserDetailsComponent implements OnInit {
               private userService: UserService,
               private route: ActivatedRoute,
               private router: Router) {
-    const state = this.router.getCurrentNavigation()?.extras.state;
-    if (state) {
-      this.userService.get(state.email).subscribe(
-        response => {
-          this.user = response;
-        }, error => {
-          console.log(error);
-          this.router.navigateByUrl('');
-        }
+    const email = localStorage.getItem('email');
+    if (email) {
+      // get course plans
+      this.userService.get(email).subscribe(
+          user => {
+            this.user = user;
+          }, error => {
+            console.log(error);
+            this.router.navigateByUrl('');
+          }
       );
     }
   }

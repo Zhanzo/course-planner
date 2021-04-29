@@ -1,27 +1,44 @@
 import { Injectable } from '@angular/core';
 import { User } from 'src/app/models/user.model';
 import { SocialUser } from 'angularx-social-login';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Token } from '../models/token.model';
+import { Router } from '@angular/router';
 
 const baseUrl = '/api/users';
+const loginUrl = '/rest-auth/google/';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  users: Array<User> = [];
-
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   get(email: string): Observable<User> {
-    return this.http.get(`${baseUrl}/${email}`);
+    return this.http.get(`${baseUrl}/${email}`, {
+      headers: new HttpHeaders('Authorization: Token ' + localStorage.getItem('token'))
+    });
   }
 
-  create(data: any): Observable<User> {
-    return this.http.post(`${baseUrl}`, data);
+  signIn(user: SocialUser): void {
+    const data = {
+      access_token: user.authToken,
+    };
+
+    this.http.post<Token>(`${loginUrl}`, data).subscribe(
+      token => {
+        console.log(token);
+        localStorage.setItem('token', token.key);
+        localStorage.setItem('email', user.email);
+        this.router.navigateByUrl('user-details', {state: {email: user.email}});
+      }, error => {
+        console.log(error);
+      }
+    );
   }
 
+  /*
   signIn(socialUser: SocialUser): void {
     this.get(socialUser.email).subscribe(
       (user) => {
@@ -30,7 +47,7 @@ export class UserService {
       () => {
         const data = {
           email: socialUser.email,
-          token: socialUser.authToken,
+          //token: socialUser.authToken,
         };
 
         this.create(data).subscribe(
@@ -44,8 +61,10 @@ export class UserService {
       }
     );
   }
+  */
 
   logOut(user: User): boolean {
+    /*
     for (const signedInUser of this.users) {
       if (signedInUser.email === user.email) {
         if (signedInUser.token === user.token) {
@@ -55,6 +74,7 @@ export class UserService {
         }
       }
     }
+    */
     return false;
   }
 }

@@ -10,6 +10,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {UserDetailsComponent} from './components/user-details/user-details.component';
 import {CoursePlanDetailsComponent} from './components/course-plan-details/course-plan-details.component';
 import {HttpClientModule} from '@angular/common/http';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [AppComponent, LogInComponent, UserDetailsComponent, CoursePlanDetailsComponent],
@@ -22,6 +23,10 @@ import {HttpClientModule} from '@angular/common/http';
     NgbModule,
   ],
   providers: [
+    {
+      provide: LocationStrategy,
+      useClass: HashLocationStrategy
+    },
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {
