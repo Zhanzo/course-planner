@@ -22,6 +22,7 @@ export class UserDetailsComponent implements OnInit {
       this.userService.get(email).subscribe(
           user => {
             this.user = user;
+            console.log(user);
           }, error => {
             console.log(error);
             this.router.navigateByUrl('');
@@ -35,22 +36,19 @@ export class UserDetailsComponent implements OnInit {
 
   createNewCoursePlan(): void {
     if (this.user) {
-      this.router.navigateByUrl('course-plan-details/', {state: {email: this.user.email, coursePlanName: ''}});
+      this.router.navigateByUrl('course-plan-details');
     }
   }
 
   viewCoursePlan(name: string): void {
     if (this.user) {
-      this.router.navigateByUrl('course-plan-details/', {
-        state: {
-          email: this.user.email,
-          coursePlanName: name
+      this.router.navigateByUrl('course-plan-details').then(
+        r => {
+          console.log(r);
+        }, error => {
+          console.log(error);
         }
-      }).then(r => {
-        console.log(r);
-      }, error => {
-        console.log(error);
-      });
+      );
     }
   }
 

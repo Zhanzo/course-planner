@@ -1,15 +1,47 @@
-<div>
-  <div *ngIf="coursePlan">
-    <h1>{{ coursePlan.name }}</h1>
-    <h2>Courses:</h2>
-    <!--
-    <ul class="list-group">
-      <li
-        class="list-group-item"
-        *ngFor="let course of coursePlan.courses">
-        {{ course }}
-      </li>
-    </ul>
-    -->
+<form [formGroup]="coursePlanForm" (ngSubmit)="onCreate()">
+  <div>
+    <label for="name">Name:</label>
+    <input id="name" required type="text" formControlName="name">
   </div>
-</div>
+  <div cdkDropListGroup>
+    <div class="example-container">
+      <h2>Courses:</h2>
+      <div 
+        cdkDropList
+        [cdkDropListData]="courses"
+        class="example-list"
+        cdkDropListSortingDisabled
+        (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let course of courses" cdkDrag>
+          {{ course.code }}
+          {{ course.name }}
+          {{ course.credits }}
+          {{ course.semester }}
+          {{ course.level }}
+          {{ course.module }}
+        </div>
+       </div>
+    </div>
+    <div class="example-container">
+      <h2>Selected Courses:</h2>
+      <div
+        cdkDropList
+        [cdkDropListData]="selected"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)"
+        formControlName="courses">
+        <div class="example-box" *ngFor="let course of selected" cdkDrag>
+          {{ course.code }}
+          {{ course.name }}
+          {{ course.credits }}
+          {{ course.semester }}
+          {{ course.level }}
+          {{ course.module }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn btn-success" type="submit">Save course plan</button>
+  <button class="btn btn-danger">Delete course plan</button>
+</form>
