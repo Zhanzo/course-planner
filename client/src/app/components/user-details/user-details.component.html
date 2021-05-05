@@ -2,15 +2,16 @@
   <div *ngIf="user">
     <h2>Course Plans</h2>
     <div>
-      <!--
       <ul class="list-group">
         <li
-          class="list-group-item"
-          *ngFor="let coursePlan of user.coursePlans">
-          <button class="btn btn-success" (click)="viewCoursePlan(coursePlan.name)">{{ coursePlan.name }}</button>
+          (click)="onSelect(coursePlan)" *ngFor="let coursePlan of coursePlans"
+          class="list-group-item">
+          <a>
+            {{ coursePlan.title }}
+            <!--<button (click)="viewCoursePlan(coursePlan.title)" class="btn btn-success">{{ coursePlan.name }}</button>-->
+          </a>
         </li>
       </ul>
-      -->
     </div>
 
     <br/>

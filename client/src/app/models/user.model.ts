@@ -1,25 +1,9 @@
 export class User {
-  email?: string;
-  token?: string;
-  isLoggedIn?: boolean;
+  email: string;
+  coursePlanIds: number[] = [];
 
-  // coursePlans: Array<CoursePlan> = [new CoursePlan('Fall semester'), new CoursePlan('Spring semester')];
-
-  constructor(email: string, token: string, isLoggedIn: boolean) {
+  constructor(email: string, coursePlanIds: number[]) {
     this.email = email;
-    this.token = token;
-    this.isLoggedIn = isLoggedIn;
+    this.coursePlanIds = coursePlanIds;
   }
-
-  /*
-  getCoursePlan(name: string): CoursePlan | null {
-    for (const coursePlan of this.coursePlans) {
-      if (coursePlan.name === name) {
-        return coursePlan;
-      }
-    }
-
-    return null;
-  }
-   */
 }

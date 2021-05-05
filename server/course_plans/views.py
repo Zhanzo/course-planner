@@ -1,11 +1,12 @@
-from course_plans.models import CoursePlan
-from course_plans.serializers import UserSerializer, CoursePlanSerializer
-from rest_framework import generics
-from django.contrib.auth.models import User
-from rest_framework import permissions
-from course_plans.permissons import IsOwnerOrReadOnly
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from dj_rest_auth.registration.views import SocialLoginView
+from django.contrib.auth.models import User
+from rest_framework import generics
+from rest_framework import permissions
+
+from course_plans.models import CoursePlan, Course
+from course_plans.permissons import IsOwnerOrReadOnly
+from course_plans.serializers import UserSerializer, CoursePlanSerializer, CourseSerializer
 
 
 class GoogleLogin(SocialLoginView):
@@ -18,13 +19,23 @@ class CoursePlanList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        obj = serializer.save(owner=self.request.user)
+        print(self.request.data)
+        for course_id in self.request.data.get('courses'):
+            course = Course.objects.get(id=course_id)
+            obj.courses.add(course)
 
 
 class CoursePlanDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = CoursePlan.objects.all()
     serializer_class = CoursePlanSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+
+
+class CourseList(generics.ListCreateAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class UserList(generics.ListCreateAPIView, generics.DestroyAPIView):

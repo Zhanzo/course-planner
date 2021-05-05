@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
 import {GoogleLoginProvider, SocialAuthService, SocialUser} from 'angularx-social-login';
 import {UserService} from 'src/app/services/user.service';
 
@@ -12,7 +11,7 @@ export class LogInComponent implements OnInit {
   user?: SocialUser;
   loggedIn?: boolean;
 
-  constructor(private authService: SocialAuthService, private userService: UserService, private router: Router) {
+  constructor(private authService: SocialAuthService, private userService: UserService) {
   }
 
   ngOnInit(): void {

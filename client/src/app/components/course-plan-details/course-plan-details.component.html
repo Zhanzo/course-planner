@@ -1,18 +1,18 @@
-<form [formGroup]="coursePlanForm" (ngSubmit)="onCreate()">
-  <div>
-    <label for="name">Name:</label>
-    <input id="name" required type="text" formControlName="name">
-  </div>
+<form (ngSubmit)="onCreate()" [formGroup]="coursePlanForm">
+  <label>
+    Name:
+    <input formControlName="name" required type="text">
+  </label>
   <div cdkDropListGroup>
     <div class="example-container">
       <h2>Courses:</h2>
-      <div 
-        cdkDropList
+      <div
+        (cdkDropListDropped)="drop($event)"
         [cdkDropListData]="courses"
-        class="example-list"
+        cdkDropList
         cdkDropListSortingDisabled
-        (cdkDropListDropped)="drop($event)">
-        <div class="example-box" *ngFor="let course of courses" cdkDrag>
+        class="example-list">
+        <div *ngFor="let course of courses" cdkDrag class="example-box">
           {{ course.code }}
           {{ course.name }}
           {{ course.credits }}
@@ -20,17 +20,17 @@
           {{ course.level }}
           {{ course.module }}
         </div>
-       </div>
+      </div>
     </div>
     <div class="example-container">
       <h2>Selected Courses:</h2>
       <div
-        cdkDropList
-        [cdkDropListData]="selected"
-        class="example-list"
         (cdkDropListDropped)="drop($event)"
+        [cdkDropListData]="selected"
+        cdkDropList
+        class="example-list"
         formControlName="courses">
-        <div class="example-box" *ngFor="let course of selected" cdkDrag>
+        <div *ngFor="let course of selected" cdkDrag class="example-box">
           {{ course.code }}
           {{ course.name }}
           {{ course.credits }}
@@ -42,6 +42,8 @@
     </div>
   </div>
 
-  <button class="btn btn-success" type="submit">Save course plan</button>
-  <button class="btn btn-danger">Delete course plan</button>
+  <button [disabled]="!coursePlanForm.valid" class="btn btn-success" type="submit">Save course plan</button>
 </form>
+
+<button class="btn btn-danger">Delete course plan</button>
+

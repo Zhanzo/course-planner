@@ -1,8 +1,9 @@
-export interface Course {
-    code: string,
-    name: string,
-    credits: number,
-    semester: Array<string>,
-    level: string,
-    module: Array<number>
+export class Course {
+  id?: number;
+  code?: string;
+  name?: string;
+  credits?: number;
+  semester?: string;
+  level?: string;
+  module?: string;
 }

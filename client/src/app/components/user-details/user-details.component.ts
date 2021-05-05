@@ -3,6 +3,8 @@ import {User} from '../../models/user.model';
 import {SocialAuthService} from 'angularx-social-login';
 import {UserService} from '../../services/user.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {CoursePlan} from "../../models/coursePlan.model";
+import {CoursePlanService} from "../../services/course-plan.service";
 
 @Component({
   selector: 'app-user-details',
@@ -11,27 +13,42 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class UserDetailsComponent implements OnInit {
   user?: User;
+  coursePlans: CoursePlan[] = [];
 
   constructor(private authService: SocialAuthService,
               private userService: UserService,
+              private coursePlanService: CoursePlanService,
               private route: ActivatedRoute,
               private router: Router) {
+  }
+
+  ngOnInit(): void {
     const email = localStorage.getItem('email');
     if (email) {
       // get course plans
       this.userService.get(email).subscribe(
-          user => {
-            this.user = user;
-            console.log(user);
-          }, error => {
-            console.log(error);
-            this.router.navigateByUrl('');
-          }
+        user => {
+          console.log(user);
+          this.user = user;
+          this.coursePlanService.getList().subscribe(
+            coursePlans => {
+              this.coursePlans = coursePlans;
+            },
+            error => console.log(error)
+          );
+        }, error => {
+          console.log(error);
+          this.router.navigateByUrl('');
+        }
       );
     }
   }
 
-  ngOnInit(): void {
+  onSelect(coursePlan: CoursePlan): void {
+    if (coursePlan.id) {
+      localStorage.setItem('coursePlanId', String(coursePlan.id));
+      this.router.navigateByUrl('course-plan-details');
+    }
   }
 
   createNewCoursePlan(): void {
@@ -40,28 +57,14 @@ export class UserDetailsComponent implements OnInit {
     }
   }
 
-  viewCoursePlan(name: string): void {
-    if (this.user) {
-      this.router.navigateByUrl('course-plan-details').then(
-        r => {
-          console.log(r);
-        }, error => {
-          console.log(error);
-        }
-      );
-    }
-  }
-
   signOut(): void {
     this.authService.signOut().then(
       () => {
         if (this.user) {
-          this.userService.logOut(this.user);
+          localStorage.deleteItem('token');
+          localStorage.deleteItem('email')
           this.router.navigateByUrl('');
         }
-      },
-      error => {
-        console.log(error);
       });
   }
 }
