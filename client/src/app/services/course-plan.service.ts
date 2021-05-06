@@ -1,8 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {CoursePlan} from '../models/coursePlan.model';
+import {Course} from '../models/course.model';
 import {Router} from '@angular/router';
 import {Observable} from "rxjs";
+
+const baseUrl = "/api/course_plans/";
 
 @Injectable({
   providedIn: 'root',
@@ -12,29 +15,39 @@ export class CoursePlanService {
   }
 
   getList(): Observable<CoursePlan[]> {
-    return this.http.get<CoursePlan[]>('/api/course_plans/');
+    return this.http.get<CoursePlan[]>(baseUrl);
   }
 
   get(id: number): Observable<CoursePlan> {
-    return this.http.get<CoursePlan>(`/api/course_plans/${id}`)
+    return this.http.get<CoursePlan>(`${baseUrl}${id}`)
   }
 
   create(coursePlan: CoursePlan) {
     this.http
-      .post('/api/course_plans/', coursePlan, {
+      .post(baseUrl, coursePlan, {
         headers: new HttpHeaders(
           'Authorization: Token ' + localStorage.getItem('token')
         ),
       })
       .subscribe(
-        (response) => {
-          console.log(response);
+        () => {
           this.router.navigateByUrl('user-details');
         },
-        (error) => {
+        error => {
           console.log(error);
-          this.router.navigateByUrl('');
         }
       );
+  }
+
+  update(id: number, title: string, courses: Course[]): void {
+    const data = {
+      title: title,
+      courses: courses
+    };
+    this.http.patch(`${baseUrl}${id}`, data, {
+      headers: new HttpHeaders(
+        'Authorization: Token ' + localStorage.getItem('token')
+      ), 
+    }).subscribe(() => this.router.navigateByUrl('user-details'));
   }
 }

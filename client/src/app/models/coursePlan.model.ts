@@ -1,13 +1,15 @@
+import {Course} from './course.model';
+
 export class CoursePlan {
   id?: number;
-  owner?: string;
-  title?: string;
-  courses?: number[];
+  owner: string;
+  title: string;
+  courses: Course[];
 
   constructor(
     owner: string,
     title: string,
-    courses: number[]
+    courses: Course[]
   ) {
     this.owner = owner;
     this.title = title;

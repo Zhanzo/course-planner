@@ -28,14 +28,13 @@ export class UserDetailsComponent implements OnInit {
       // get course plans
       this.userService.get(email).subscribe(
         user => {
-          console.log(user);
-          this.user = user;
-          this.coursePlanService.getList().subscribe(
-            coursePlans => {
-              this.coursePlans = coursePlans;
-            },
-            error => console.log(error)
-          );
+          console.log(user)
+          this.user = user
+          for (const coursePlanId of this.user.coursePlans) {
+            this.coursePlanService.get(coursePlanId).subscribe(
+              coursePlan => this.coursePlans.push(coursePlan)
+            );
+          }
         }, error => {
           console.log(error);
           this.router.navigateByUrl('');

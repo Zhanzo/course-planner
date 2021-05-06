@@ -24,7 +24,7 @@ export class UserService {
 
   signIn(user: SocialUser): void {
     const data = {
-      access_token: user.authToken,
+      accessToken: user.authToken,
     };
 
     this.http.post<Token>(`${loginUrl}`, data).subscribe(

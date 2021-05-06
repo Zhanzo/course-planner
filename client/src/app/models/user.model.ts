@@ -1,9 +1,9 @@
 export class User {
   email: string;
-  coursePlanIds: number[] = [];
+  coursePlans: number[] = [];
 
-  constructor(email: string, coursePlanIds: number[]) {
+  constructor(email: string, coursePlans: number[]) {
     this.email = email;
-    this.coursePlanIds = coursePlanIds;
+    this.coursePlans = coursePlans;
   }
 }

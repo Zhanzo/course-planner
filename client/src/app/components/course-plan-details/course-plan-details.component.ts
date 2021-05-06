@@ -45,20 +45,11 @@ export class CoursePlanDetailsComponent implements OnInit {
 
   onCreate(): void {
     // Send to database and go back
-    let courseIds: number[] = [];
-    for (const course of this.selected) {
-      if (course.id != null) {
-        courseIds.push(course.id);
-      }
-    }
-
-    if (this.coursePlan) {
-      localStorage.deleteItem('courseIDs');
-      this.coursePlan.title = this.coursePlanForm.value.name;
-      this.coursePlan.courses = courseIds;
-      this.coursePlanService.create(this.coursePlan);
+    if (this.coursePlan && this.coursePlan.id) {
+      localStorage.removeItem('courseIDs');
+      this.coursePlanService.update(this.coursePlan.id, this.coursePlanForm.value.name, this.selected);
     } else if (this.user) {
-      const coursePlan = new CoursePlan(this.user.email, this.coursePlanForm.value.name, courseIds);
+      const coursePlan = new CoursePlan(this.user.email, this.coursePlanForm.value.name, this.selected);
       this.coursePlanService.create(coursePlan);
     }
   }
@@ -74,12 +65,13 @@ export class CoursePlanDetailsComponent implements OnInit {
             courses => this.courses = courses,
             error => console.log(error)
           );
-          const id = localStorage.getItem('coursePlanId');
-          if (id) {
-            this.coursePlanService.get(Number(id)).subscribe(
+          const coursePlanId = localStorage.getItem('coursePlanId');
+          if (coursePlanId) {
+            this.coursePlanService.get(Number(coursePlanId)).subscribe(
               coursePlan => {
-                // TODO: Remove courses that are in the course plan from courses to selected
-                console.log(coursePlan);
+                // Move the previously selected courses to selected
+                this.coursePlan = coursePlan;
+                this.moveCourseToSelected(coursePlan)
                 this.coursePlanForm.patchValue({name: coursePlan.title})
               });
           }
@@ -88,6 +80,24 @@ export class CoursePlanDetailsComponent implements OnInit {
           this.router.navigateByUrl('');
         }
       );
+    }
+  }
+
+  moveCourseToSelected(coursePlan: CoursePlan): void {
+    for (var i = 0; i < this.courses.length;) {
+      var course = this.courses[i];
+      var foundCourse = false;
+      for (const coursePlanCourse of coursePlan.courses) {
+        if (course.id == coursePlanCourse.id)  {
+          this.selected.push(course);
+          this.courses.splice(i, 1);
+          foundCourse = true;
+          break;
+        }
+      }
+      if (!foundCourse) {
+        i++;
+      }
     }
   }
 }

@@ -20,16 +20,20 @@ class CoursePlanList(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         obj = serializer.save(owner=self.request.user)
-        print(self.request.data)
-        for course_id in self.request.data.get('courses'):
-            course = Course.objects.get(id=course_id)
-            obj.courses.add(course)
+        for course in self.request.data.get('courses'):
+            obj.courses.add(course["id"])
 
 
 class CoursePlanDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = CoursePlan.objects.all()
     serializer_class = CoursePlanSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+
+    def perform_update(self, serializer):
+        obj = serializer.save(owner=self.request.user)
+        obj.courses.clear()
+        for course in self.request.data.get('courses'):
+            obj.courses.add(course["id"])
 
 
 class CourseList(generics.ListCreateAPIView):
