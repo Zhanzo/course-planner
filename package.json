@@ -9,7 +9,7 @@
   },
   "engines": {
     "node": "16.0.0",
-    "npm": "7.11.1"
+    "npm": "7.11.2"
   },
   "cacheDirectories": [
     "client/node_modules"

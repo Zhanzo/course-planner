@@ -1,20 +1,29 @@
-import {NgModule} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {BrowserModule} from '@angular/platform-browser';
-import {GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule,} from 'angularx-social-login';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import {
+  GoogleLoginProvider,
+  SocialAuthServiceConfig,
+  SocialLoginModule,
+} from 'angularx-social-login';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
-import {AppRoutingModule} from './app-routing.module';
-import {AppComponent} from './app.component';
-import {LogInComponent} from './components/log-in/log-in.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {UserDetailsComponent} from './components/user-details/user-details.component';
-import {CoursePlanDetailsComponent} from './components/course-plan-details/course-plan-details.component';
-import {HttpClientModule} from '@angular/common/http';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { LogInComponent } from './components/log-in/log-in.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { UserDetailsComponent } from './components/user-details/user-details.component';
+import { CoursePlanDetailsComponent } from './components/course-plan-details/course-plan-details.component';
+import { HttpClientModule } from '@angular/common/http';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 @NgModule({
-  declarations: [AppComponent, LogInComponent, UserDetailsComponent, CoursePlanDetailsComponent],
+  declarations: [
+    AppComponent,
+    LogInComponent,
+    UserDetailsComponent,
+    CoursePlanDetailsComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -28,7 +37,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
   providers: [
     {
       provide: LocationStrategy,
-      useClass: HashLocationStrategy
+      useClass: HashLocationStrategy,
     },
     {
       provide: 'SocialAuthServiceConfig',
@@ -47,5 +56,4 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}

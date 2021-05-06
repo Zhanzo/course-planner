@@ -1,6 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {GoogleLoginProvider, SocialAuthService, SocialUser} from 'angularx-social-login';
-import {UserService} from 'src/app/services/user.service';
+import { Component, OnInit } from '@angular/core';
+import {
+  GoogleLoginProvider,
+  SocialAuthService,
+  SocialUser,
+} from 'angularx-social-login';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-log-in',
@@ -11,8 +15,10 @@ export class LogInComponent implements OnInit {
   user?: SocialUser;
   loggedIn?: boolean;
 
-  constructor(private authService: SocialAuthService, private userService: UserService) {
-  }
+  constructor(
+    private authService: SocialAuthService,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
     this.authService.authState.subscribe((user) => {
@@ -23,10 +29,10 @@ export class LogInComponent implements OnInit {
 
   signInWithGoogle(): void {
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then(
-      user => {
+      (user) => {
         this.userService.signIn(user);
       },
-      error => {
+      (error) => {
         console.log(error);
       }
     );

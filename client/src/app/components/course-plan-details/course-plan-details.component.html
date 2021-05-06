@@ -1,7 +1,7 @@
-<form (ngSubmit)="onCreate()" [formGroup]="coursePlanForm">
+<form (ngSubmit)="onSave()" [formGroup]="coursePlanForm">
   <label>
     Name:
-    <input formControlName="name" required type="text">
+    <input formControlName="name" required type="text" />
   </label>
   <div cdkDropListGroup>
     <div class="example-container">
@@ -11,7 +11,8 @@
         [cdkDropListData]="courses"
         cdkDropList
         cdkDropListSortingDisabled
-        class="example-list">
+        class="example-list"
+      >
         <div *ngFor="let course of courses" cdkDrag class="example-box">
           {{ course.code }}
           {{ course.name }}
@@ -29,7 +30,8 @@
         [cdkDropListData]="selected"
         cdkDropList
         class="example-list"
-        formControlName="courses">
+        formControlName="courses"
+      >
         <div *ngFor="let course of selected" cdkDrag class="example-box">
           {{ course.code }}
           {{ course.name }}
@@ -42,8 +44,13 @@
     </div>
   </div>
 
-  <button [disabled]="!coursePlanForm.valid" class="btn btn-success" type="submit">Save course plan</button>
+  <button
+    [disabled]="!coursePlanForm.valid"
+    class="btn btn-success"
+    type="submit"
+  >
+    Save course plan
+  </button>
 </form>
 
-<button class="btn btn-danger">Delete course plan</button>
-
+<button class="btn btn-danger" (click)="onDelete()">Delete course plan</button>

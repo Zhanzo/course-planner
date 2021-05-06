@@ -1,4 +1,4 @@
-import {Course} from './course.model';
+import { Course } from './course.model';
 
 export class CoursePlan {
   id?: number;
@@ -6,11 +6,7 @@ export class CoursePlan {
   title: string;
   courses: Course[];
 
-  constructor(
-    owner: string,
-    title: string,
-    courses: Course[]
-  ) {
+  constructor(owner: string, title: string, courses: Course[]) {
     this.owner = owner;
     this.title = title;
     this.courses = courses;
