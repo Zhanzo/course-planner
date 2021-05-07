@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { CoursePlan } from '../models/coursePlan.model';
 import { Course } from '../models/course.model';
 import { Router } from '@angular/router';
@@ -17,48 +17,34 @@ export class CoursePlanService {
     return this.http.get<CoursePlan[]>(baseUrl);
   }
 
-  get(id: number): Observable<CoursePlan> {
+  get(id: any): Observable<CoursePlan> {
     return this.http.get<CoursePlan>(`${baseUrl}${id}`);
   }
 
   create(coursePlan: CoursePlan) {
-    this.http
-      .post(baseUrl, coursePlan, {
-        headers: new HttpHeaders(
-          'Authorization: Token ' + localStorage.getItem('token')
-        ),
-      })
-      .subscribe(
-        () => {
-          this.router.navigateByUrl('user-details');
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+    this.http.post(baseUrl, coursePlan).subscribe(
+      () => {
+        this.router.navigateByUrl('user-details');
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
-  update(id: number, title: string, courses: Course[]): void {
+  update(id: any, title: string, courses: Course[]): void {
     const data = {
       title,
       courses,
     };
     this.http
-      .patch(`${baseUrl}${id}`, data, {
-        headers: new HttpHeaders(
-          'Authorization: Token ' + localStorage.getItem('token')
-        ),
-      })
+      .patch(`${baseUrl}${id}`, data)
       .subscribe(() => this.router.navigateByUrl('user-details'));
   }
 
-  delete(id: number) {
+  delete(id: any) {
     this.http
-      .delete(`${baseUrl}${id}`, {
-        headers: new HttpHeaders(
-          'Authorization: Token ' + localStorage.getItem('token')
-        ),
-      })
+      .delete(`${baseUrl}${id}`)
       .subscribe(() => this.router.navigateByUrl('user-details'));
   }
 }

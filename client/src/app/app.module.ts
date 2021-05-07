@@ -14,8 +14,10 @@ import { LogInComponent } from './components/log-in/log-in.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserDetailsComponent } from './components/user-details/user-details.component';
 import { CoursePlanDetailsComponent } from './components/course-plan-details/course-plan-details.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { TokenInterceptorService } from './services/token-interceptor.service';
+import { AuthGuard } from './guards/auth.guard';
 
 @NgModule({
   declarations: [
@@ -35,9 +37,15 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
     DragDropModule,
   ],
   providers: [
+    [AuthGuard],
     {
       provide: LocationStrategy,
       useClass: HashLocationStrategy,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptorService,
+      multi: true,
     },
     {
       provide: 'SocialAuthServiceConfig',

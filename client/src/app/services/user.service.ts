@@ -16,11 +16,7 @@ export class UserService {
   constructor(private http: HttpClient, private router: Router) {}
 
   get(email: string): Observable<User> {
-    return this.http.get<User>(`${baseUrl}${email}`, {
-      headers: new HttpHeaders(
-        'Authorization: Token ' + localStorage.getItem('token')
-      ),
-    });
+    return this.http.get<User>(`${baseUrl}${email}`);
   }
 
   signIn(user: SocialUser): void {

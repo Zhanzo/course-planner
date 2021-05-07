@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import {
   CdkDragDrop,
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { Router } from '@angular/router';
-import { UserService } from '../../services/user.service';
-import { User } from '../../models/user.model';
 import { Course } from '../../models/course.model';
 import { CourseService } from '../../services/course.service';
 import { CoursePlan } from '../../models/coursePlan.model';
@@ -20,19 +18,22 @@ import { CoursePlanService } from '../../services/course-plan.service';
 })
 export class CoursePlanDetailsComponent implements OnInit {
   email?: string;
-  coursePlan?: CoursePlan;
-  coursePlanForm = new FormGroup({
-    name: new FormControl(''),
-    courses: new FormControl([]),
-  });
+  coursePlanId?: string;
+  name = this.formBuilder.control('', [
+    Validators.required,
+    Validators.minLength(3),
+  ]);
   courses: Course[] = [];
-  selected: Course[] = [];
+  selectedCourses: Course[] = [];
+  coursePlanForm = this.formBuilder.group({
+    name: this.name,
+  });
 
   constructor(
     private router: Router,
     private courseService: CourseService,
     private coursePlanService: CoursePlanService,
-    private userService: UserService
+    private formBuilder: FormBuilder
   ) {}
 
   drop(event: CdkDragDrop<Course[]>) {
@@ -54,34 +55,33 @@ export class CoursePlanDetailsComponent implements OnInit {
 
   onSave(): void {
     // Send to database and go back
-    if (this.coursePlan && this.coursePlan.id) {
+    if (this.coursePlanId) {
       localStorage.removeItem('coursePlanId');
       this.coursePlanService.update(
-        this.coursePlan.id,
-        this.coursePlanForm.value.name,
-        this.selected
+        this.coursePlanId,
+        this.name.value,
+        this.selectedCourses
       );
     } else if (this.email) {
       const coursePlan = new CoursePlan(
         this.email,
-        this.coursePlanForm.value.name,
-        this.selected
+        this.name.value,
+        this.selectedCourses
       );
       this.coursePlanService.create(coursePlan);
     }
   }
 
   onDelete(): void {
-    if (this.coursePlan && this.coursePlan.id) {
+    if (this.coursePlanId) {
       localStorage.removeItem('coursePlanId');
-      this.coursePlanService.delete(this.coursePlan.id);
+      this.coursePlanService.delete(this.coursePlanId);
     } else {
       this.router.navigateByUrl('user-details');
     }
   }
 
   ngOnInit(): void {
-    console.log('Init courseplan');
     const email = localStorage.getItem('email');
 
     if (!email) {
@@ -95,30 +95,23 @@ export class CoursePlanDetailsComponent implements OnInit {
       (error) => console.log(error)
     );
 
-    console.log('Get courseplan');
     const coursePlanId = localStorage.getItem('coursePlanId');
-    console.log('From localStorage');
     if (coursePlanId) {
-      console.log('Send request');
-      this.coursePlanService
-        .get(Number(coursePlanId))
-        .subscribe((coursePlan) => {
-          // Move the previously selected courses to selected
-          console.log(coursePlan);
-          this.coursePlan = coursePlan;
-          console.log('Moving courses');
-          this.moveCourseToSelected(coursePlan);
-          this.coursePlanForm.patchValue({ name: coursePlan.title });
-        });
+      this.coursePlanService.get(coursePlanId).subscribe((coursePlan) => {
+        this.coursePlanId = coursePlanId;
+        this.moveCourseToSelected(coursePlan);
+        this.name.setValue(coursePlan.title);
+      });
     }
   }
 
-  moveCourseToSelected(coursePlan: CoursePlan): void {
+  private moveCourseToSelected(coursePlan: CoursePlan): void {
+    // Moves the previously selected courses to selected
     for (let i = 0; i < this.courses.length; i++) {
       const course = this.courses[i];
       for (const coursePlanCourse of coursePlan.courses) {
         if (course.id === coursePlanCourse.id) {
-          this.selected.push(course);
+          this.selectedCourses.push(course);
           this.courses.splice(i, 1);
           i--;
           break;
