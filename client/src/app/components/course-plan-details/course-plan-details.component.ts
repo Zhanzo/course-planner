@@ -6,10 +6,11 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { Router } from '@angular/router';
-import { Course } from '../../models/course.model';
 import { CourseService } from '../../services/course.service';
-import { CoursePlan } from '../../models/coursePlan.model';
 import { CoursePlanService } from '../../services/course-plan.service';
+import { UserService } from '../../services/user.service';
+import { CoursePlan } from 'src/app/models/coursePlan.model';
+import { Course } from 'src/app/models/course.model';
 
 @Component({
   selector: 'app-course-plan-details',
@@ -17,7 +18,7 @@ import { CoursePlanService } from '../../services/course-plan.service';
   styleUrls: ['./course-plan-details.component.css'],
 })
 export class CoursePlanDetailsComponent implements OnInit {
-  email?: string;
+  userId?: string;
   coursePlanId?: string;
   name = this.formBuilder.control('', [
     Validators.required,
@@ -33,6 +34,7 @@ export class CoursePlanDetailsComponent implements OnInit {
     private router: Router,
     private courseService: CourseService,
     private coursePlanService: CoursePlanService,
+    private userService: UserService,
     private formBuilder: FormBuilder
   ) {}
 
@@ -56,25 +58,23 @@ export class CoursePlanDetailsComponent implements OnInit {
   onSave(): void {
     // Send to database and go back
     if (this.coursePlanId) {
-      localStorage.removeItem('coursePlanId');
       this.coursePlanService.update(
         this.coursePlanId,
         this.name.value,
         this.selectedCourses
       );
-    } else if (this.email) {
-      const coursePlan = new CoursePlan(
-        this.email,
-        this.name.value,
-        this.selectedCourses
-      );
+    } else if (this.userId) {
+      const coursePlan: CoursePlan = {
+        owner: this.userId,
+        title: this.name.value,
+        courses: this.selectedCourses,
+      };
       this.coursePlanService.create(coursePlan);
     }
   }
 
   onDelete(): void {
     if (this.coursePlanId) {
-      localStorage.removeItem('coursePlanId');
       this.coursePlanService.delete(this.coursePlanId);
     } else {
       this.router.navigateByUrl('user-details');
@@ -82,14 +82,13 @@ export class CoursePlanDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const email = localStorage.getItem('email');
+    const userId = this.userService.getUserId();
 
-    if (!email) {
-      this.router.navigateByUrl('');
+    if (!userId) {
       return;
     }
 
-    this.email = email;
+    this.userId = userId;
     this.courseService.get().subscribe(
       (courses) => (this.courses = courses),
       (error) => console.log(error)

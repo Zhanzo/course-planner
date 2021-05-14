@@ -21,11 +21,12 @@ export class TokenInterceptorService implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    if (this.auth.isAuthenticated()) {
+    const token = this.auth.getToken();
+    if (token) {
       request = request.clone({
         headers: request.headers.set(
           'Authorization',
-          `Token ${this.auth.getToken()}`
+          `Bearer ${token.accessToken}`
         ),
       });
     }

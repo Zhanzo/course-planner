@@ -25,6 +25,9 @@ export class LogInComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+
     this.authService.authState.subscribe((user) => {
       this.user = user;
       this.loggedIn = user != null;
@@ -33,14 +36,14 @@ export class LogInComponent implements OnInit {
 
   signInWithGoogle(): void {
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then(
-      (user) => this.userService.signIn(user),
+      (user) => this.userService.signIn(user, 'google-oauth2'),
       (error) => console.log(error)
     );
   }
 
   signInWithFacebook(): void {
     this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then(
-      (user) => this.userService.signIn(user),
+      (user) => this.userService.signIn(user, 'facebook'),
       (error) => console.log(error)
     );
   }
