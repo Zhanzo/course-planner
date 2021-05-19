@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Token } from '../models/token.model';
 
 @Injectable({
   providedIn: 'root',
@@ -6,8 +7,12 @@ import { Injectable } from '@angular/core';
 export class AuthService {
   constructor() {}
 
-  getToken(): string | null {
-    return localStorage.getItem('token');
+  getToken(): Token | null {
+    const token = localStorage.getItem('token');
+    if (token) {
+      return JSON.parse(token);
+    }
+    return null;
   }
 
   isAuthenticated(): boolean {

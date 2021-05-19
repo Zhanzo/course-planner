@@ -16,11 +16,11 @@ Including another URLconf
 from django.urls import path, include
 from django.views.generic import TemplateView
 from django.contrib import admin
-from course_plans.views import GoogleLogin
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('rest-auth/google/', GoogleLogin.as_view(), name='google_login'),
+    path('auth/', include('rest_framework.urls')),
+    path('auth/', include('drf_social_oauth2.urls', namespace='drf')),
     path('api/', include('course_plans.urls')),
     path('', TemplateView.as_view(template_name="index.html")),
 ]

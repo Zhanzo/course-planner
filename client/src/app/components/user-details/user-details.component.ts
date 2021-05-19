@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../../models/user.model';
 import { SocialAuthService } from 'angularx-social-login';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
-import { CoursePlan } from '../../models/coursePlan.model';
 import { CoursePlanService } from '../../services/course-plan.service';
+import { CoursePlan } from 'src/app/models/coursePlan.model';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-user-details',
@@ -12,7 +12,6 @@ import { CoursePlanService } from '../../services/course-plan.service';
   styleUrls: ['./user-details.component.css'],
 })
 export class UserDetailsComponent implements OnInit {
-  user?: User;
   coursePlans: CoursePlan[] = [];
 
   constructor(
@@ -23,32 +22,25 @@ export class UserDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const email = localStorage.getItem('email');
-    if (!email) {
-      this.router.navigateByUrl('');
+    localStorage.removeItem('coursePlanId');
+
+    const userId = this.userService.getUserId();
+    if (!userId) {
       return;
     }
 
-    this.userService.get(email).subscribe(
-      (user) => {
-        console.log(user);
-        this.user = user;
-        // get course plans
-        for (const coursePlanId of this.user.coursePlans) {
-          this.coursePlanService
-            .get(coursePlanId)
-            .subscribe((coursePlan) => this.coursePlans.push(coursePlan));
-        }
-      },
-      (error) => {
-        console.log(error);
+    this.userService.get(userId).subscribe((user: User) => {
+      // get course plans
+      for (const coursePlanId of user.coursePlans) {
+        this.coursePlanService
+          .get(coursePlanId)
+          .subscribe((coursePlan) => this.coursePlans.push(coursePlan));
       }
-    );
+    });
   }
 
   onSelect(coursePlan: CoursePlan): void {
     if (coursePlan.id) {
-      console.log('Set local');
       localStorage.setItem('coursePlanId', String(coursePlan.id));
       this.router.navigateByUrl('course-plan-details');
     }
@@ -63,16 +55,13 @@ export class UserDetailsComponent implements OnInit {
   }
 
   onCreate(): void {
-    if (this.user) {
-      this.router.navigateByUrl('course-plan-details');
-    }
+    this.router.navigateByUrl('course-plan-details');
   }
 
   signOut(): void {
-    this.authService.signOut().then(() => {
-      localStorage.removeItem('token');
-      localStorage.removeItem('email');
-      this.router.navigateByUrl('');
-    });
+    this.authService.signOut();
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    this.router.navigateByUrl('');
   }
 }

@@ -3,6 +3,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import {
   GoogleLoginProvider,
+  FacebookLoginProvider,
   SocialAuthServiceConfig,
   SocialLoginModule,
 } from 'angularx-social-login';
@@ -18,6 +19,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { AuthGuard } from './guards/auth.guard';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,7 @@ import { AuthGuard } from './guards/auth.guard';
     SocialLoginModule,
     NgbModule,
     DragDropModule,
+    FontAwesomeModule,
   ],
   providers: [
     [AuthGuard],
@@ -57,6 +60,10 @@ import { AuthGuard } from './guards/auth.guard';
             provider: new GoogleLoginProvider(
               '578371408744-rgsj7tjokbiquja3rois7ai52r2grrpb.apps.googleusercontent.com'
             ),
+          },
+          {
+            id: FacebookLoginProvider.PROVIDER_ID,
+            provider: new FacebookLoginProvider('2240930789372204'),
           },
         ],
       } as SocialAuthServiceConfig,
