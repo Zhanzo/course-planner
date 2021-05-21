@@ -18,6 +18,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { AuthGuard } from './guards/auth.guard';
+import { NavigationBarComponent } from './Navigation-bar/navigation-bar.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { AuthGuard } from './guards/auth.guard';
     LogInComponent,
     UserDetailsComponent,
     CoursePlanDetailsComponent,
+    NavigationBarComponent,
   ],
   imports: [
     BrowserModule,
