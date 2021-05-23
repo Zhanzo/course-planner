@@ -90,18 +90,20 @@ export class CoursePlanDetailsComponent implements OnInit {
 
     this.userId = userId;
     this.courseService.get().subscribe(
-      (courses) => (this.courses = courses),
+      (courses) => {
+        this.courses = courses;
+        const coursePlanId = localStorage.getItem('coursePlanId');
+        if (coursePlanId) {
+          this.coursePlanService.get(coursePlanId).subscribe((coursePlan) => {
+            this.coursePlanId = coursePlanId;
+            console.log(coursePlan.courses);
+            this.moveCourseToSelected(coursePlan);
+            this.name.setValue(coursePlan.title);
+          });
+        }
+      },
       (error) => console.log(error)
     );
-
-    const coursePlanId = localStorage.getItem('coursePlanId');
-    if (coursePlanId) {
-      this.coursePlanService.get(coursePlanId).subscribe((coursePlan) => {
-        this.coursePlanId = coursePlanId;
-        this.moveCourseToSelected(coursePlan);
-        this.name.setValue(coursePlan.title);
-      });
-    }
   }
 
   private moveCourseToSelected(coursePlan: CoursePlan): void {
@@ -110,6 +112,7 @@ export class CoursePlanDetailsComponent implements OnInit {
       const course = this.courses[i];
       for (const coursePlanCourse of coursePlan.courses) {
         if (course.id === coursePlanCourse.id) {
+          console.log('Moving course...');
           this.selectedCourses.push(course);
           this.courses.splice(i, 1);
           i--;
