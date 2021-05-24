@@ -3,12 +3,11 @@ stages:
   - staging
   - production
 
-before_script:
-  - apt-get update -qy
-
 test-server:
   stage: test
   image: python:latest
+  before_script:
+    - apt-get update -qy
   script:
     - pip install -r requirements.txt
     - cd server
@@ -17,8 +16,9 @@ test-server:
 
 test-client:
   stage: test
-  image: node:lts
+  image: node:lts-stretch
   before_script:
+    - apt-get update -qy
     - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
     - apt install -y ./google-chrome*.deb;
     - export CHROME_BIN=/usr/bin/google-chrome
@@ -31,6 +31,8 @@ staging:
   type: deploy
   stage: staging
   image: ruby:latest
+  before_script:
+    - apt-get update -qy
   script:
     - gem install dpl
     - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
@@ -41,6 +43,8 @@ production:
   type: deploy
   stage: production
   image: ruby:latest
+  before_script:
+    - apt-get update -qy
   script:
     - gem install dpl
     - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
