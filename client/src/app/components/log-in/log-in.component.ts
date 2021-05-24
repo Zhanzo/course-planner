@@ -7,6 +7,7 @@ import {
 } from 'angularx-social-login';
 import { UserService } from 'src/app/services/user.service';
 import { faFacebookF, faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-log-in',
@@ -21,7 +22,8 @@ export class LogInComponent implements OnInit {
 
   constructor(
     private authService: SocialAuthService,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -36,15 +38,25 @@ export class LogInComponent implements OnInit {
 
   signInWithGoogle(): void {
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then(
-      (user) => this.userService.signIn(user, 'google-oauth2'),
+      (user) => this.signIn(user.authToken, 'google-oauth2'),
       (error) => console.log(error)
     );
   }
 
   signInWithFacebook(): void {
     this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then(
-      (user) => this.userService.signIn(user, 'facebook'),
+      (user) => this.signIn(user.authToken, 'facebook'),
       (error) => console.log(error)
     );
+  }
+
+  private signIn(authToken: string, backend: string): void {
+    this.userService.getToken(authToken, backend).subscribe((token) => {
+      localStorage.setItem('token', JSON.stringify(token));
+      this.userService.getCurrentUser().subscribe((user) => {
+        localStorage.setItem('userId', String(user.id));
+        this.router.navigateByUrl('user-details');
+      });
+    });
   }
 }

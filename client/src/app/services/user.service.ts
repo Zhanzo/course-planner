@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { SocialUser } from 'angularx-social-login';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Router } from '@angular/router';
 import { User } from '../models/user.model';
 import { Token } from '../models/token.model';
 
@@ -14,37 +12,29 @@ const clientSecret =
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient) {}
 
   getUserId(): string | null {
     return localStorage.getItem('userId');
   }
 
-  get(id: string): Observable<User> {
+  get(id: any): Observable<User> {
     return this.http.get<User>('/api/users/' + id);
   }
 
-  signIn(socialUser: SocialUser, backend: string): void {
+  getToken(authToken: string, backend: string): Observable<Token> {
     const data = {
       grantType: 'convert_token',
       clientId,
       clientSecret,
       backend,
-      token: socialUser.authToken,
+      token: authToken,
     };
 
-    this.http.post<Token>('/auth/convert-token', data).subscribe(
-      (token) => {
-        localStorage.setItem('token', JSON.stringify(token));
-        this.http.get<User>('/api/current_user/').subscribe(
-          (user) => {
-            localStorage.setItem('userId', String(user.id));
-            this.router.navigateByUrl('user-details');
-          },
-          (error) => console.log(error)
-        );
-      },
-      (error) => console.log(error)
-    );
+    return this.http.post<Token>('/auth/convert-token', data);
+  }
+
+  getCurrentUser(): Observable<User> {
+    return this.http.get<User>('/api/current_user/');
   }
 }

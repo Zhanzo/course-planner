@@ -6,7 +6,7 @@ stages:
 before_script:
   - apt-get update -qy
 
-test:
+test-server:
   stage: test
   image: python:latest
   script:
@@ -14,6 +14,18 @@ test:
     - cd server
     - python manage.py test
     - echo "Done"
+
+test-client:
+  stage: test
+  image: node:lts
+  before_script:
+    - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    - apt install -y ./google-chrome*.deb;
+    - export CHROME_BIN=/usr/bin/google-chrome
+  script:
+    - cd client
+    - npm ci
+    - npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
 
 staging:
   type: deploy
