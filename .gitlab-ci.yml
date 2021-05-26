@@ -6,6 +6,8 @@ stages:
 test-server:
   stage: test
   image: python:latest
+  variables:
+    - DEBUG: 'False'
   before_script:
     - apt-get update -qy
   script:
