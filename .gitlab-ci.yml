@@ -6,12 +6,10 @@ stages:
 test-server:
   stage: test
   image: python:latest
-  variables:
-    DEBUG: 'False'
   before_script:
     - apt-get update -qy
   script:
-    - pip install -r requirements.txt
+    - pip install -r requirements_dev.txt
     - cd server
     - python manage.py test
     - echo "Done"
