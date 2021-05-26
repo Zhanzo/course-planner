@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { SocialAuthService } from 'angularx-social-login';
-import { UserService } from '../../services/user.service';
+import { UserService } from 'src/app/services/user.service';
 import { Router } from '@angular/router';
-import { CoursePlanService } from '../../services/course-plan.service';
+import { CoursePlanService } from 'src/app/services/course-plan.service';
 import { CoursePlan } from 'src/app/models/coursePlan.model';
 import { User } from 'src/app/models/user.model';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-user-details',
@@ -15,7 +15,7 @@ export class UserDetailsComponent implements OnInit {
   coursePlans: CoursePlan[] = [];
 
   constructor(
-    private authService: SocialAuthService,
+    private authService: AuthService,
     private userService: UserService,
     private coursePlanService: CoursePlanService,
     private router: Router
@@ -24,12 +24,7 @@ export class UserDetailsComponent implements OnInit {
   ngOnInit(): void {
     localStorage.removeItem('coursePlanId');
 
-    const userId = this.userService.getUserId();
-    if (!userId) {
-      return;
-    }
-
-    this.userService.get(userId).subscribe((user: User) => {
+    this.userService.getCurrentUser().subscribe((user: User) => {
       // get course plans
       for (const coursePlanId of user.coursePlans) {
         this.coursePlanService
@@ -59,9 +54,13 @@ export class UserDetailsComponent implements OnInit {
   }
 
   signOut(): void {
-    this.authService.signOut();
-    localStorage.removeItem('token');
-    localStorage.removeItem('userId');
-    this.router.navigateByUrl('');
+    this.authService.logout().subscribe(
+      (success) => {
+        if (success) {
+          this.router.navigateByUrl('');
+        }
+      },
+      (error) => console.log(error)
+    );
   }
 }

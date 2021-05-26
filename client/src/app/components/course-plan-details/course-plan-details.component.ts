@@ -6,9 +6,8 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { Router } from '@angular/router';
-import { CourseService } from '../../services/course.service';
-import { CoursePlanService } from '../../services/course-plan.service';
-import { UserService } from '../../services/user.service';
+import { CourseService } from 'src/app/services/course.service';
+import { CoursePlanService } from 'src/app/services/course-plan.service';
 import { CoursePlan } from 'src/app/models/coursePlan.model';
 import { Course } from 'src/app/models/course.model';
 
@@ -18,7 +17,6 @@ import { Course } from 'src/app/models/course.model';
   styleUrls: ['./course-plan-details.component.css'],
 })
 export class CoursePlanDetailsComponent implements OnInit {
-  userId?: string;
   coursePlanId?: string;
   name = this.formBuilder.control('', [
     Validators.required,
@@ -34,7 +32,6 @@ export class CoursePlanDetailsComponent implements OnInit {
     private router: Router,
     private courseService: CourseService,
     private coursePlanService: CoursePlanService,
-    private userService: UserService,
     private formBuilder: FormBuilder
   ) {}
 
@@ -63,9 +60,9 @@ export class CoursePlanDetailsComponent implements OnInit {
         this.name.value,
         this.selectedCourses
       );
-    } else if (this.userId) {
+    } /*if (this.userId)*/ else {
       const coursePlan: CoursePlan = {
-        owner: this.userId,
+        //owner: this.userId,
         title: this.name.value,
         courses: this.selectedCourses,
       };
@@ -82,13 +79,6 @@ export class CoursePlanDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const userId = this.userService.getUserId();
-
-    if (!userId) {
-      return;
-    }
-
-    this.userId = userId;
     this.courseService.get().subscribe(
       (courses) => {
         this.courses = courses;
@@ -96,7 +86,6 @@ export class CoursePlanDetailsComponent implements OnInit {
         if (coursePlanId) {
           this.coursePlanService.get(coursePlanId).subscribe((coursePlan) => {
             this.coursePlanId = coursePlanId;
-            console.log(coursePlan.courses);
             this.moveCourseToSelected(coursePlan);
             this.name.setValue(coursePlan.title);
           });
@@ -111,8 +100,10 @@ export class CoursePlanDetailsComponent implements OnInit {
     for (let i = 0; i < this.courses.length; i++) {
       const course = this.courses[i];
       for (const coursePlanCourse of coursePlan.courses) {
-        if (course.id === coursePlanCourse.id) {
-          console.log('Moving course...');
+        if (
+          course.id === coursePlanCourse.id &&
+          course.semester === coursePlanCourse.semester
+        ) {
           this.selectedCourses.push(course);
           this.courses.splice(i, 1);
           i--;
