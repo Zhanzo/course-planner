@@ -6,10 +6,9 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
-import { Router } from '@angular/router';
-import { catchError, switchMap, filter, take, finalize } from 'rxjs/operators';
+import { catchError, switchMap, filter, take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +17,7 @@ export class TokenInterceptorService implements HttpInterceptor {
   private isRefreshing = false;
   private refreshTokenSubject = new BehaviorSubject<any>(null);
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -40,7 +39,7 @@ export class TokenInterceptorService implements HttpInterceptor {
     );
   }
 
-  private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
+  private handle401Error(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (!this.isRefreshing) {
       this.isRefreshing = true;
       this.refreshTokenSubject.next(null);

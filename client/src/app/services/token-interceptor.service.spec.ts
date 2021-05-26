@@ -5,7 +5,6 @@ import {
 } from '@angular/common/http/testing';
 import { Injectable } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { User } from '../models/user.model';
 
 import { TokenInterceptorService } from './token-interceptor.service';
@@ -27,7 +26,7 @@ describe('TokenInterceptorService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      imports: [HttpClientTestingModule],
       providers: [
         MockDataService,
         {

@@ -1,19 +1,19 @@
 <form [formGroup]="coursePlanForm">
   <div class="mb-3">
-    <label for="name" class="form-label">Name</label>
+    <label for="title" class="form-label">Title</label>
     <input
       class="form-control"
-      id="name"
-      name="name"
-      formControlName="name"
+      id="title"
+      name="title"
+      formControlName="title"
       type="text"
     />
   </div>
-  <div *ngIf="name.invalid || name.touched">
-    <div *ngIf="name.hasError('required')" class="alert alert-danger">
+  <div *ngIf="title.invalid || title.touched">
+    <div *ngIf="title.hasError('required')" class="alert alert-danger">
       Name is required.
     </div>
-    <div *ngIf="name.hasError('minlength')" class="alert alert-danger">
+    <div *ngIf="title.hasError('minlength')" class="alert alert-danger">
       Name must be at least 3 characters long.
     </div>
   </div>

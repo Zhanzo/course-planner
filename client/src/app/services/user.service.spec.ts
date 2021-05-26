@@ -31,7 +31,7 @@ describe('UserService', () => {
     expect(service.getUserId()).toBe(dummyUserId);
   });
 
-  it('#get should be able to retrieve a user given an id', () => {
+  it('#get should be able to retrieve a user from the server by giving an id', () => {
     const dummyUser: User = {
       id: '1',
       email: 'mail@example.com',
@@ -47,7 +47,7 @@ describe('UserService', () => {
     request.flush(dummyUser);
   });
 
-  it('#getCurrentUser should get the currently signed in user from the backend', () => {
+  it('#getCurrentUser should get the currently signed in user from the server', () => {
     const dummyUser: User = {
       id: '1',
       email: 'example@mail.com',

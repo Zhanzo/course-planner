@@ -22,7 +22,7 @@ export class UserDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    localStorage.removeItem('coursePlanId');
+    this.coursePlanService.removeId();
 
     this.userService.getCurrentUser().subscribe((user: User) => {
       // get course plans
@@ -36,16 +36,23 @@ export class UserDetailsComponent implements OnInit {
 
   onSelect(coursePlan: CoursePlan): void {
     if (coursePlan.id) {
-      localStorage.setItem('coursePlanId', String(coursePlan.id));
+      this.coursePlanService.storeId(coursePlan.id);
       this.router.navigateByUrl('course-plan-details');
     }
   }
 
   onDelete(coursePlan: CoursePlan): void {
     if (coursePlan.id) {
-      this.coursePlanService.delete(coursePlan.id);
-      const index = this.coursePlans.indexOf(coursePlan);
-      this.coursePlans.splice(index, 1);
+      this.coursePlanService
+        .delete(coursePlan.id)
+        .subscribe((success: boolean) => {
+          if (success) {
+            const index = this.coursePlans.indexOf(coursePlan);
+            this.coursePlans.splice(index, 1);
+          } else {
+            alert('Course plan could not be deleted');
+          }
+        });
     }
   }
 
@@ -54,13 +61,10 @@ export class UserDetailsComponent implements OnInit {
   }
 
   signOut(): void {
-    this.authService.logout().subscribe(
-      (success) => {
-        if (success) {
-          this.router.navigateByUrl('');
-        }
-      },
-      (error) => console.log(error)
-    );
+    this.authService.logout().subscribe((success) => {
+      if (success) {
+        this.router.navigateByUrl('');
+      }
+    });
   }
 }

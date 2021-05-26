@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError, mapTo, tap } from 'rxjs/operators';
 import { Token } from '../models/token.model';
 
@@ -17,7 +17,7 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(authToken: string, backend: string) {
+  login(authToken: string, backend: string): Observable<boolean> {
     return this.http
       .post<Token>('/auth/convert-token/', {
         grantType: 'convert_token',
@@ -36,7 +36,7 @@ export class AuthService {
       );
   }
 
-  logout() {
+  logout(): Observable<boolean> {
     return this.http
       .post('/auth/invalidate-sessions/', {
         clientId,
@@ -51,7 +51,7 @@ export class AuthService {
       );
   }
 
-  getToken() {
+  getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }
 
@@ -59,7 +59,7 @@ export class AuthService {
     return !!this.getToken() || !!this.getRefreshToken();
   }
 
-  refreshToken() {
+  refreshToken(): Observable<any> {
     return this.http
       .post<Token>('/auth/token/', {
         grantType: 'refresh_token',
@@ -70,24 +70,24 @@ export class AuthService {
       .pipe(tap((token: Token) => this.storeTokens(token)));
   }
 
-  private getRefreshToken() {
+  private getRefreshToken(): string | null {
     return localStorage.getItem(this.refreshTokenKey);
   }
 
-  private storeTokens(token: Token) {
+  private storeTokens(token: Token): void {
     this.storeToken(token.accessToken);
     this.storeRefreshToken(token.refreshToken);
   }
 
-  private storeToken(token: string) {
+  private storeToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
   }
 
-  private storeRefreshToken(refreshToken: string) {
+  private storeRefreshToken(refreshToken: string): void {
     localStorage.setItem(this.refreshTokenKey, refreshToken);
   }
 
-  private removeTokens() {
+  private removeTokens(): void {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.refreshTokenKey);
   }
