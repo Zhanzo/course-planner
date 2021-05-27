@@ -72,7 +72,7 @@ export class UserDetailsComponent implements OnInit {
     this.authService.signOut().then(() => {
       localStorage.removeItem('token');
       localStorage.removeItem('email');
-      this.router.navigateByUrl('');
+      this.router.navigateByUrl('home');
     });
   }
 }

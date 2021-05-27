@@ -1,15 +1,23 @@
 <div class="container">
-  <h2 class="text-center mb-5">CoursePlanner</h2>
 
-  <app-navaiagation-bar SideClass="navbar navbar-expand-lg navbar-dark indigo"></app-navaiagation-bar>
+  <app-navaiagation-bar SideClass="navbar navbar-expand-lg navbar-dark bg-primary"></app-navaiagation-bar>
     <dir class="container">    
       <div class="row">
         <div class="col-md-5"></div>
         <div class="col-md-7"></div>
       </div>
     </dir>  
+  
+  <mat-sidenav-container>
+    <mat-sidenav #sidenav role="navigation">
 
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <main>
+        <router-outlet></router-outlet>
+      </main>
+    </mat-sidenav-content>
+  </mat-sidenav-container>  
 
-  <router-outlet></router-outlet>
 
 </div>

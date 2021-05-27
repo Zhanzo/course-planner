@@ -67,3 +67,4 @@ import { NavigationBarComponent } from './Navigation-bar/navigation-bar.componen
   bootstrap: [AppComponent],
 })
 export class AppModule {}
+  

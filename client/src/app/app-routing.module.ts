@@ -6,7 +6,8 @@ import { CoursePlanDetailsComponent } from './components/course-plan-details/cou
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
-  { path: '', component: LogInComponent },
+  { path: 'home', component: LogInComponent},
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
   {
     path: 'user-details',
     component: UserDetailsComponent,
