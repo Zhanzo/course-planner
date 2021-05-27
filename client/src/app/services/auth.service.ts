@@ -4,17 +4,16 @@ import { Observable, of } from 'rxjs';
 import { catchError, mapTo, tap } from 'rxjs/operators';
 import { Token } from '../models/token.model';
 
-const clientId = 'Y9tWhEXa9GmbD6X6uT4FP7BIB1JWjNMrRCsJBtrk';
-const clientSecret =
+export const clientId = 'Y9tWhEXa9GmbD6X6uT4FP7BIB1JWjNMrRCsJBtrk';
+export const clientSecret =
   'TOTrfKjqU9hYF3sTQgcn0WZm0nHmzdHgnSCDXwzeqFYrKuNuNKIM7k8S2QaZRQAbCjN6WRtjFuDVqSu4Gx9C7A2B71kwk4t5GjRUYtOWlueRjrKVJjUDYChM6Q5j5wEM';
+export const tokenKey = 'TOKEN';
+export const refreshTokenKey = 'REFRESH_TOKEN';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly tokenKey = 'TOKEN';
-  private readonly refreshTokenKey = 'REFRESH_TOKEN';
-
   constructor(private http: HttpClient) {}
 
   login(authToken: string, backend: string): Observable<boolean> {
@@ -52,7 +51,7 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
+    return localStorage.getItem(tokenKey);
   }
 
   isAuthenticated(): boolean {
@@ -71,7 +70,7 @@ export class AuthService {
   }
 
   private getRefreshToken(): string | null {
-    return localStorage.getItem(this.refreshTokenKey);
+    return localStorage.getItem(refreshTokenKey);
   }
 
   private storeTokens(token: Token): void {
@@ -80,15 +79,15 @@ export class AuthService {
   }
 
   private storeToken(token: string): void {
-    localStorage.setItem(this.tokenKey, token);
+    localStorage.setItem(tokenKey, token);
   }
 
   private storeRefreshToken(refreshToken: string): void {
-    localStorage.setItem(this.refreshTokenKey, refreshToken);
+    localStorage.setItem(refreshTokenKey, refreshToken);
   }
 
   private removeTokens(): void {
-    localStorage.removeItem(this.tokenKey);
-    localStorage.removeItem(this.refreshTokenKey);
+    localStorage.removeItem(tokenKey);
+    localStorage.removeItem(refreshTokenKey);
   }
 }

@@ -13,7 +13,7 @@ export class UserService {
     return localStorage.getItem('userId');
   }
 
-  get(id: any): Observable<User> {
+  get(id: string): Observable<User> {
     return this.http.get<User>('/api/users/' + id);
   }
 
