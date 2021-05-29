@@ -9,14 +9,9 @@
   },
   "engines": {
     "node": "16.0.0",
-    "npm": "7.11.2"
+    "npm": "7.12.0"
   },
   "cacheDirectories": [
     "client/node_modules"
-  ],
-  "dependencies": {
-    "@angular/animations": "^12.0.2",
-    "@angular/cdk": "^12.0.2",
-    "@angular/material": "^12.0.2"
-  }
+  ]
 }

@@ -1,23 +1,13 @@
-<div class="container">
-
-  <app-navaiagation-bar SideClass="navbar navbar-expand-lg navbar-dark bg-primary"></app-navaiagation-bar>
-    <dir class="container">    
-      <div class="row">
-        <div class="col-md-5"></div>
-        <div class="col-md-7"></div>
-      </div>
-    </dir>  
-  
+<div>
   <mat-sidenav-container>
     <mat-sidenav #sidenav role="navigation">
-
+      <app-sidenav-list (sidenavClose)="sidenav.close()"></app-sidenav-list>
     </mat-sidenav>
     <mat-sidenav-content>
+      <app-header (sidenavToggle)="sidenav.toggle()"></app-header>
       <main>
         <router-outlet></router-outlet>
       </main>
     </mat-sidenav-content>
-  </mat-sidenav-container>  
-
-
+  </mat-sidenav-container>
 </div>

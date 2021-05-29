@@ -11,14 +11,23 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LogInComponent } from './components/log-in/log-in.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserDetailsComponent } from './components/user-details/user-details.component';
 import { CoursePlanDetailsComponent } from './components/course-plan-details/course-plan-details.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { AuthGuard } from './guards/auth.guard';
-import { NavigationBarComponent } from './Navigation-bar/navigation-bar.component';
+import { HeaderComponent } from './navigation/header/header.component';
+import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { CommonModule } from '@angular/common';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   declarations: [
@@ -26,7 +35,8 @@ import { NavigationBarComponent } from './Navigation-bar/navigation-bar.componen
     LogInComponent,
     UserDetailsComponent,
     CoursePlanDetailsComponent,
-    NavigationBarComponent,
+    HeaderComponent,
+    SidenavListComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,8 +45,24 @@ import { NavigationBarComponent } from './Navigation-bar/navigation-bar.componen
     ReactiveFormsModule,
     HttpClientModule,
     SocialLoginModule,
-    NgbModule,
     DragDropModule,
+    BrowserAnimationsModule,
+    CommonModule,
+    MatTabsModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
+    MatListModule,
+  ],
+  exports: [
+    CommonModule,
+    MatTabsModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
+    MatListModule,
   ],
   providers: [
     [AuthGuard],
@@ -67,4 +93,3 @@ import { NavigationBarComponent } from './Navigation-bar/navigation-bar.componen
   bootstrap: [AppComponent],
 })
 export class AppModule {}
-  

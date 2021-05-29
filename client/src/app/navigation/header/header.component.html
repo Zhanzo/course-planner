@@ -1,5 +1,45 @@
+<mat-toolbar color="primary">
+  <div fxHide.gt-xs>
+    <button mat-icon-button (click)="onToggleSidenav()">
+      <mat-icon>menu</mat-icon>
+      <link
+        href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet"
+      />
+    </button>
+  </div>
+  <div fxFlex fxLayout fxLayoutAlign="end" fxHide.xs class="nav">
+    <ul fxlayout fxlayoutGap="15px" class="navigation-items">
+      <li><a routerLink="/home" routerLinkActive="active">Home</a></li>
+      <li>
+        <a routerLink="/user-details" routerLinkActive="active">Profile</a>
+      </li>
+      <li>
+        <a target="_blank" href="https://liu.se/studieinfo/en">Curriculum</a>
+      </li>
+    </ul>
+  </div>
+  <div class="course-planner">
+    <a>Course Planner</a>
+  </div>
+</mat-toolbar>
+
+<!--
+  <div fxFlex fxLayout fxLayoutAlign="end" fxHide.xs>
+    <ul fxlayout fxlayoutGap="15px" class="navigation-items">
+      <li>
+        <a routerLink="/user-details" routerLinkActive="active">Profile</a>
+      </li>
+      <li>
+        <a target="_blank" href="https://liu.se/studieinfo/en">Curriculum</a>
+      </li>
+    </ul>
+  </div>
+  -->
+
+<!--
 <div class="navbar navbar-default">
-    <!--<div class="container-fluid"> -->
+    <div class="container-fluid"> 
         <div class="navbar-header  mt-2 d-inline-block">
             <a class="navbar-brand">CoursePlanner</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" 
@@ -23,5 +63,6 @@
                 </ul>
                 
         </div>    
-    <!--</div> -->
+    </div>
 </div>
+-->
