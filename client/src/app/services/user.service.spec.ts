@@ -7,6 +7,12 @@ import {
 import { UserService } from './user.service';
 import { User } from '../models/user.model';
 
+const dummyUser: User = {
+  id: '1',
+  email: 'example@mail.com',
+  coursePlans: [1, 2, 3],
+};
+
 describe('UserService', () => {
   let service: UserService;
   let httpMock: HttpTestingController;
@@ -25,19 +31,11 @@ describe('UserService', () => {
   });
 
   it('#getUserId should return value from localStorage', () => {
-    const dummyUserId = '1';
-    localStorage.setItem('userId', dummyUserId);
-
-    expect(service.getUserId()).toBe(dummyUserId);
+    localStorage.setItem('userId', dummyUser.id);
+    expect(service.getUserId()).toBe(dummyUser.id);
   });
 
   it('#get should be able to retrieve a user from the server by giving an id', () => {
-    const dummyUser: User = {
-      id: '1',
-      email: 'mail@example.com',
-      coursePlans: [1, 2, 3],
-    };
-
     service.get(dummyUser.id).subscribe((user) => {
       expect(user).toBe(dummyUser);
     });
@@ -48,12 +46,6 @@ describe('UserService', () => {
   });
 
   it('#getCurrentUser should get the currently signed in user from the server', () => {
-    const dummyUser: User = {
-      id: '1',
-      email: 'example@mail.com',
-      coursePlans: [1, 2, 3],
-    };
-
     service.getCurrentUser().subscribe((user) => {
       expect(user).toBe(dummyUser);
     });

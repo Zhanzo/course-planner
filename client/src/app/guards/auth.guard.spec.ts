@@ -7,29 +7,24 @@ import {
 } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
-class AuthServiceMock {
-  authenticated = false;
-
-  isAuthenticated() {
-    return this.authenticated;
-  }
-}
-
 import { AuthGuard } from './auth.guard';
 
 describe('AuthGuard', () => {
   const routeMock = {} as ActivatedRouteSnapshot;
   const routeStateMock = {} as RouterStateSnapshot;
-  const routerMock = { navigate: jasmine.createSpy('navigate') };
-  const authService = new AuthServiceMock();
+  let routerSpy: jasmine.SpyObj<Router>;
+  let authServiceSpy: jasmine.SpyObj<AuthService>;
   let guard: AuthGuard;
 
   beforeEach(() => {
+    routerSpy = jasmine.createSpyObj<Router>('Router', ['navigate']);
+    authServiceSpy = jasmine.createSpyObj<AuthService>('AuthService', ['isAuthenticated']);
+
     TestBed.configureTestingModule({
       providers: [
         AuthGuard,
-        { provide: AuthService, useValue: authService },
-        { provide: Router, useValue: routerMock },
+        { provide: AuthService, useValue: authServiceSpy },
+        { provide: Router, useValue: routerSpy },
       ],
       imports: [HttpClientTestingModule],
     });
@@ -42,13 +37,15 @@ describe('AuthGuard', () => {
   });
 
   it('should redirect an unauthorized user to the home page', () => {
-    authService.authenticated = false;
+    authServiceSpy.isAuthenticated.and.returnValue(false);
     expect(guard.canActivate(routeMock, routeStateMock)).toBeFalse();
-    expect(routerMock.navigate).toHaveBeenCalledWith(['']);
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['login']);
+    expect(authServiceSpy.isAuthenticated).toHaveBeenCalledTimes(1);
   });
 
   it('should allow an authenticated user to access the app', () => {
-    authService.authenticated = true;
+    authServiceSpy.isAuthenticated.and.returnValue(true);
     expect(guard.canActivate(routeMock, routeStateMock)).toBeTrue();
+    expect(authServiceSpy.isAuthenticated).toHaveBeenCalledTimes(1);
   });
 });

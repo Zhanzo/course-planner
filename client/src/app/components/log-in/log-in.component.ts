@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   FacebookLoginProvider,
   GoogleLoginProvider,
@@ -14,7 +14,7 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './log-in.component.html',
   styleUrls: ['./log-in.component.css'],
 })
-export class LogInComponent implements OnInit {
+export class LogInComponent {
   faGoogle = faGoogle;
   faFacebookF = faFacebookF;
 
@@ -24,30 +24,24 @@ export class LogInComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-    if (this.authService.isAuthenticated()) {
-      this.router.navigateByUrl('user-details');
-    }
-  }
-
-  signInWithGoogle(): void {
+  logInWithGoogle(): void {
     this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID).then(
-      (user: SocialUser) => this.signIn(user.authToken, 'google-oauth2'),
+      (user: SocialUser) => this.logIn(user.authToken, 'google-oauth2'),
       (error) => console.log(error)
     );
   }
 
-  signInWithFacebook(): void {
+  logInWithFacebook(): void {
     this.socialAuthService.signIn(FacebookLoginProvider.PROVIDER_ID).then(
-      (user: SocialUser) => this.signIn(user.authToken, 'facebook'),
+      (user: SocialUser) => this.logIn(user.authToken, 'facebook'),
       (error) => console.log(error)
     );
   }
 
-  private signIn(authToken: string, backend: string): void {
+  private logIn(authToken: string, backend: string): void {
     this.authService.login(authToken, backend).subscribe((success: boolean) => {
       if (success) {
-        this.router.navigateByUrl('user-details');
+        this.router.navigate(['user']);
       }
     });
   }
