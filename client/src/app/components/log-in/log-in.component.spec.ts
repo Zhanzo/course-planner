@@ -34,7 +34,7 @@ describe('LogInComponent', () => {
   let fixture: ComponentFixture<LogInComponent>;
 
   beforeEach(async () => {
-    routerSpy = jasmine.createSpyObj<Router>('Router', ['navigate']);
+    routerSpy = jasmine.createSpyObj<Router>('Router', ['navigateByUrl']);
     authServiceSpy = jasmine.createSpyObj<AuthService>('AuthService', [
       'login',
     ]);
@@ -76,7 +76,7 @@ describe('LogInComponent', () => {
       dummyToken,
       'facebook'
     );
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['user']);
+    expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('user');
   }));
 
   it('should be able to login with Google', fakeAsync(() => {
@@ -87,6 +87,6 @@ describe('LogInComponent', () => {
       dummyToken,
       'google-oauth2'
     );
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['user']);
+    expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('user');
   }));
 });

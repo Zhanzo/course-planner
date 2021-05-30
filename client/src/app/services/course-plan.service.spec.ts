@@ -24,28 +24,16 @@ describe('CoursePlanService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('#getId() returns course plan id from localStorage', () => {
-    const dummyId = '1';
-    localStorage.setItem('COURSE_PLAN_ID', dummyId);
-    expect(service.getId()).toBe(dummyId);
-  });
-
-  it('#setId() sets the course plan id in localStorage', () => {
-    const dummyId = '1';
-    service.storeId(dummyId);
-    expect(localStorage.getItem('COURSE_PLAN_ID')).toBe(dummyId);
-  });
-
   it('#getList() should send a get request for a list of courses', () => {
     const dummyCoursePlans: CoursePlan[] = [
       {
-        id: '1',
+        id: 1,
         owner: 'example@mail.com',
         title: 'Spring 2020',
         courses: [],
       },
       {
-        id: '2',
+        id: 2,
         owner: 'example2@mail.com',
         title: 'Fall 2020',
         courses: [],
@@ -63,7 +51,7 @@ describe('CoursePlanService', () => {
 
   it('#get() should send a get request for a specific course plan', () => {
     const dummyCoursePlan: CoursePlan = {
-      id: '1',
+      id: 1,
       owner: 'example@mail.com',
       title: 'Spring 2020',
       courses: [],
@@ -95,7 +83,7 @@ describe('CoursePlanService', () => {
   });
 
   it('#update() should send a patch request with the title and a list of courses', () => {
-    const dummyId = '1';
+    const dummyId = 1;
     const dummyTitle = 'Spring 2020';
     const dummyCourses: Course[] = [];
 
@@ -110,7 +98,7 @@ describe('CoursePlanService', () => {
   });
 
   it('#delete() should send a delete request with an id', () => {
-    const dummyId = '1';
+    const dummyId = 1;
 
     service.delete(dummyId).subscribe((response) => {
       expect(response).toBeTruthy();

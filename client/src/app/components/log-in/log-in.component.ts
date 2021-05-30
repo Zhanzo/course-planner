@@ -41,7 +41,7 @@ export class LogInComponent {
   private logIn(authToken: string, backend: string): void {
     this.authService.login(authToken, backend).subscribe((success: boolean) => {
       if (success) {
-        this.router.navigate(['user']);
+        this.router.navigateByUrl('user');
       }
     });
   }

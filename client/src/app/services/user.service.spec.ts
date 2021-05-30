@@ -8,7 +8,7 @@ import { UserService } from './user.service';
 import { User } from '../models/user.model';
 
 const dummyUser: User = {
-  id: '1',
+  id: 1,
   email: 'example@mail.com',
   coursePlans: [1, 2, 3],
 };
@@ -28,11 +28,6 @@ describe('UserService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
-  });
-
-  it('#getUserId should return value from localStorage', () => {
-    localStorage.setItem('userId', dummyUser.id);
-    expect(service.getUserId()).toBe(dummyUser.id);
   });
 
   it('#get should be able to retrieve a user from the server by giving an id', () => {

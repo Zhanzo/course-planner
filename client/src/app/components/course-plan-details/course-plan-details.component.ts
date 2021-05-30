@@ -5,7 +5,7 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CourseService } from 'src/app/services/course.service';
 import { CoursePlanService } from 'src/app/services/course-plan.service';
 import { CoursePlan } from 'src/app/models/coursePlan.model';
@@ -21,6 +21,7 @@ export class CoursePlanDetailsComponent implements OnInit {
     Validators.required,
     Validators.minLength(3),
   ]);
+  coursePlan?: CoursePlan;
   courses: Course[] = [];
   selectedCourses: Course[] = [];
   coursePlanForm = this.formBuilder.group({
@@ -29,6 +30,7 @@ export class CoursePlanDetailsComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     private courseService: CourseService,
     private coursePlanService: CoursePlanService,
     private formBuilder: FormBuilder
@@ -53,13 +55,12 @@ export class CoursePlanDetailsComponent implements OnInit {
 
   onSave(): void {
     // Send to database and go back
-    const coursePlanId = this.coursePlanService.getId();
-    if (coursePlanId) {
+    if (this.coursePlan) {
       this.coursePlanService
-        .update(coursePlanId, this.title.value, this.selectedCourses)
+        .update(this.coursePlan.id, this.title.value, this.selectedCourses)
         .subscribe((success: boolean) => {
           if (success) {
-            this.router.navigateByUrl('user-details');
+            this.router.navigateByUrl('user');
           } else {
             alert('Course plan could not be saved');
           }
@@ -69,7 +70,7 @@ export class CoursePlanDetailsComponent implements OnInit {
         .create(this.title.value, this.selectedCourses)
         .subscribe((success: boolean) => {
           if (success) {
-            this.router.navigateByUrl('user-details');
+            this.router.navigateByUrl('user');
           } else {
             alert('Course plan could not be saved.');
           }
@@ -78,17 +79,16 @@ export class CoursePlanDetailsComponent implements OnInit {
   }
 
   onDelete(): void {
-    const id = this.coursePlanService.getId();
-    if (id) {
-      this.coursePlanService.delete(id).subscribe((success: boolean) => {
+    if (this.coursePlan) {
+      this.coursePlanService.delete(this.coursePlan.id).subscribe((success: boolean) => {
         if (success) {
-          this.router.navigateByUrl('user-details');
+          this.router.navigateByUrl('user');
         } else {
           alert('Course plan could not be deleted');
         }
       });
     } else {
-      this.router.navigateByUrl('user-details');
+      this.router.navigateByUrl('user');
     }
   }
 
@@ -96,12 +96,15 @@ export class CoursePlanDetailsComponent implements OnInit {
     this.courseService.get().subscribe(
       (courses) => {
         this.courses = courses;
-        const coursePlanId = this.coursePlanService.getId();
-        if (coursePlanId) {
-          this.coursePlanService.get(coursePlanId).subscribe((coursePlan) => {
-            this.moveCourseToSelected(coursePlan);
-            this.title.setValue(coursePlan.title);
-          });
+        const coursePlanId = Number(this.activatedRoute.snapshot.params.id);
+        if (coursePlanId !== -1) {
+          this.coursePlanService
+            .get(coursePlanId)
+            .subscribe((coursePlan: CoursePlan) => {
+              this.coursePlan = coursePlan;
+              this.moveCourseToSelected(this.coursePlan);
+              this.title.setValue(this.coursePlan.title);
+            });
         }
       },
       (error) => console.log(error)

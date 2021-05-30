@@ -13,7 +13,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'course-plan',
+    path: 'course-plan/:id',
     component: CoursePlanDetailsComponent,
     canActivate: [AuthGuard],
   },

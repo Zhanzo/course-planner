@@ -25,7 +25,7 @@ describe('CourseService', () => {
   it('#get() should give a list of courses', () => {
     const dummyCourses: Course[] = [
       {
-        id: '1',
+        id: 1,
         code: 'TDDD27',
         name: 'Advanced Web Programming',
         credits: 6,
@@ -35,7 +35,7 @@ describe('CourseService', () => {
         module: '3',
       },
       {
-        id: '2',
+        id: 2,
         code: 'TDDE41',
         name: 'Software Architecture',
         credits: 6,
@@ -45,7 +45,7 @@ describe('CourseService', () => {
         module: '1',
       },
       {
-        id: '3',
+        id: 3,
         code: 'TDDD38',
         name: 'Advanced Programming in C++',
         credits: 6,
