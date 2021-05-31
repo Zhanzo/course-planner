@@ -76,13 +76,14 @@ describe('AuthService', () => {
 
     service.logout().subscribe((response) => {
       expect(response).toBeTrue();
-      expect(localStorage.getItem(tokenKey)).toBeUndefined();
-      expect(localStorage.getItem(refreshTokenKey)).toBeUndefined();
+      expect(localStorage.getItem(tokenKey)).toBeNull();
+      expect(localStorage.getItem(refreshTokenKey)).toBeNull();
     });
 
     const request = httpMock.expectOne('/auth/invalidate-sessions/');
     expect(request.request.method).toBe('POST');
     expect(request.request.body.clientId).toBe(clientId);
+    request.flush(null, { status: 200, statusText: 'Tokens removed successfully' });
   });
 
   it('#getToken() should return token from localStorage', () => {
@@ -136,13 +137,14 @@ describe('AuthService', () => {
     const dummyRefreshToken = 'abcd';
 
     localStorage.setItem(refreshTokenKey, dummyRefreshToken);
-    service.refreshToken().subscribe(() => {
-      expect(localStorage.getItem(refreshTokenKey)).toBeUndefined();
+    service.refreshToken().subscribe((response) => {
+      expect(localStorage.getItem(refreshTokenKey)).toBeNull();
       expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('login');
+      expect(response).toBeNull();
     });
 
     const request = httpMock.expectOne('/auth/token/');
     expect(request.request.method).toBe('POST');
-    request.flush(null, { status: 501, statusText: 'error!'});
+    request.flush(null, { status: 501, statusText: 'error!' });
   });
 });

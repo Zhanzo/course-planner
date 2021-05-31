@@ -19,13 +19,21 @@ export class AuthService {
 
   login(authToken: string, backend: string): Observable<boolean> {
     return this.http
-      .post<Token>('/auth/convert-token/', {
-        grantType: 'convert_token',
-        clientId,
-        clientSecret,
-        backend,
-        token: authToken,
-      })
+      .post<Token>(
+        '/auth/convert-token/',
+        {
+          grantType: 'convert_token',
+          clientId,
+          clientSecret,
+          backend,
+          token: authToken,
+        },
+        {
+          headers: {
+            noAuth: 'true',
+          },
+        }
+      )
       .pipe(
         tap((token: Token) => this.storeTokens(token)),
         mapTo(true),
@@ -77,12 +85,14 @@ export class AuthService {
       )
       .pipe(
         tap({
-          next: (token: Token) => this.storeTokens(token),
+          next: (token: Token) => {
+            this.storeTokens(token);
+          },
         }),
-        catchError((error) => {
+        catchError(() => {
           this.removeTokens();
           this.router.navigateByUrl('login');
-          return throwError(error);
+          return of(null);
         })
       );
   }
