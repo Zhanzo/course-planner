@@ -80,13 +80,15 @@ export class CoursePlanDetailsComponent implements OnInit {
 
   onDelete(): void {
     if (this.coursePlan) {
-      this.coursePlanService.delete(this.coursePlan.id).subscribe((success: boolean) => {
-        if (success) {
-          this.router.navigateByUrl('user');
-        } else {
-          alert('Course plan could not be deleted');
-        }
-      });
+      this.coursePlanService
+        .delete(this.coursePlan.id)
+        .subscribe((success: boolean) => {
+          if (success) {
+            this.router.navigateByUrl('user');
+          } else {
+            alert('Course plan could not be deleted');
+          }
+        });
     } else {
       this.router.navigateByUrl('user');
     }

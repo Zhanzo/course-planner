@@ -9,6 +9,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
 import { catchError, switchMap, filter, take } from 'rxjs/operators';
+import { Token } from '../models/token.model';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,10 @@ export class TokenInterceptorService implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
+    if (request.headers.has('noAuth')) {
+      return next.handle(request);
+    }
+
     const token = this.authService.getToken();
     if (token) {
       request = this.addToken(request, token);
@@ -39,13 +44,16 @@ export class TokenInterceptorService implements HttpInterceptor {
     );
   }
 
-  private handle401Error(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  private handle401Error(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
     if (!this.isRefreshing) {
       this.isRefreshing = true;
       this.refreshTokenSubject.next(null);
 
       return this.authService.refreshToken().pipe(
-        switchMap((token: any) => {
+        switchMap((token: Token) => {
           this.isRefreshing = false;
           this.refreshTokenSubject.next(token.accessToken);
           return next.handle(this.addToken(request, token.accessToken));

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CoursePlan } from '../models/coursePlan.model';
 import { Course } from '../models/course.model';
 import { Observable, of } from 'rxjs';
-import { catchError, mapTo, tap } from 'rxjs/operators';
+import { catchError, mapTo } from 'rxjs/operators';
 
 const baseUrl = '/api/course_plans/';
 
@@ -11,7 +11,6 @@ const baseUrl = '/api/course_plans/';
   providedIn: 'root',
 })
 export class CoursePlanService {
-
   constructor(private http: HttpClient) {}
 
   getList(): Observable<CoursePlan[]> {

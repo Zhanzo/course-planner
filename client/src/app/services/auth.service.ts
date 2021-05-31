@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Router } from '@angular/router';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, mapTo, tap } from 'rxjs/operators';
 import { Token } from '../models/token.model';
 
@@ -14,7 +15,7 @@ export const refreshTokenKey = 'REFRESH_TOKEN';
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   login(authToken: string, backend: string): Observable<boolean> {
     return this.http
@@ -60,13 +61,30 @@ export class AuthService {
 
   refreshToken(): Observable<any> {
     return this.http
-      .post<Token>('/auth/token/', {
-        grantType: 'refresh_token',
-        clientId,
-        clientSecret,
-        refreshToken: this.getRefreshToken(),
-      })
-      .pipe(tap((token: Token) => this.storeTokens(token)));
+      .post<Token>(
+        '/auth/token/',
+        {
+          grantType: 'refresh_token',
+          clientId,
+          clientSecret,
+          refreshToken: this.getRefreshToken(),
+        },
+        {
+          headers: {
+            noAuth: 'true',
+          },
+        }
+      )
+      .pipe(
+        tap({
+          next: (token: Token) => this.storeTokens(token),
+        }),
+        catchError((error) => {
+          this.removeTokens();
+          this.router.navigateByUrl('login');
+          return throwError(error);
+        })
+      );
   }
 
   private getRefreshToken(): string | null {

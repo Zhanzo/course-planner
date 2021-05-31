@@ -3,6 +3,8 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { throwError } from 'rxjs';
 import { Token } from '../models/token.model';
 
 import {
@@ -14,16 +16,25 @@ import {
 } from './auth.service';
 
 describe('AuthService', () => {
+  let routerSpy: jasmine.SpyObj<Router>;
   let service: AuthService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
+    routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
+
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
+      providers: [{ provide: Router, useValue: routerSpy }],
     });
 
     service = TestBed.inject(AuthService);
     httpMock = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => {
+    localStorage.removeItem(tokenKey);
+    localStorage.removeItem(refreshTokenKey);
   });
 
   it('should be created', () => {
@@ -104,11 +115,12 @@ describe('AuthService', () => {
     };
 
     localStorage.setItem(refreshTokenKey, dummyRefreshToken);
-    service.refreshToken().subscribe(() => {
+    service.refreshToken().subscribe((token) => {
       expect(localStorage.getItem(tokenKey)).toBe(dummyServerToken.accessToken);
       expect(localStorage.getItem(refreshTokenKey)).toBe(
         dummyServerToken.refreshToken
       );
+      expect(token).toBe(dummyServerToken);
     });
 
     const request = httpMock.expectOne('/auth/token/');
@@ -118,5 +130,19 @@ describe('AuthService', () => {
     expect(request.request.body.clientSecret).toBe(clientSecret);
     expect(request.request.body.refreshToken).toBe(dummyRefreshToken);
     request.flush(dummyServerToken);
+  });
+
+  it('#refreshToken() should redirect to the login page if post request fails and remove tokens', () => {
+    const dummyRefreshToken = 'abcd';
+
+    localStorage.setItem(refreshTokenKey, dummyRefreshToken);
+    service.refreshToken().subscribe(() => {
+      expect(localStorage.getItem(refreshTokenKey)).toBeUndefined();
+      expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('login');
+    });
+
+    const request = httpMock.expectOne('/auth/token/');
+    expect(request.request.method).toBe('POST');
+    request.flush(null, { status: 501, statusText: 'error!'});
   });
 });

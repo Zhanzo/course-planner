@@ -22,7 +22,6 @@ export class UserDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.userService.getCurrentUser().subscribe((user: User) => {
       // get course plans
-      console.log(user);
       for (const coursePlanId of user.coursePlans) {
         this.coursePlanService
           .get(coursePlanId)
