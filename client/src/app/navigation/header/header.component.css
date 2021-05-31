@@ -1,9 +1,3 @@
-.course-planner {
-  position: absolute;
-  right: 10px;
-  margin-right: 10px;
-}
-
 a {
   text-decoration: none;
   color: white;
@@ -20,14 +14,25 @@ a:active {
   list-style-type: none;
   padding: 0;
   margin: 0;
+  font-size: medium;
 }
 
 mat-toolbar {
   border-radius: 3px;
 }
 
+.course-planner {
+  position: absolute;
+  right: 10px;
+  margin-right: 10px;
+  font-style: oblique;
+  font-size: xx-large;
+  font-weight: bold;
+}
+/* For responsive navbar can be completed- needs some changes
 @media (max-width: 959px) {
   mat-toolbar {
     border-radius: 0px;
   }
 }
+*/

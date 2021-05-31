@@ -1,7 +1,8 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { SocialAuthService } from 'angularx-social-login';
-import { LogInComponent } from 'src/app/components/log-in/log-in.component';
+import { SocialAuthService, SocialUser } from 'angularx-social-login';
+import { CoursePlan } from 'src/app/models/coursePlan.model';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-header',
@@ -10,23 +11,28 @@ import { LogInComponent } from 'src/app/components/log-in/log-in.component';
 })
 export class HeaderComponent implements OnInit {
   @Output() public sidenavToggle = new EventEmitter();
-  isloggedIn?: boolean;
-  constructor() {}
+  user?: SocialUser;
+  coursePlans: CoursePlan[] = [];
+  loggedIn?: boolean;
 
-  ngOnInit(): void {}
-  /*
-  constructor(private logincomponent: LogInComponent) {}
+  constructor(
+    private authService: SocialAuthService,
+    private router: Router,
+    private userService: UserService
+  ) {}
 
-  ngOnInit(): void {}
-    if (this.logincomponent.loggedIn) {
-      this.isloggedIn = true;
+  ngOnInit(): void {
+    const email = localStorage.getItem('email');
+    if (!email) {
+      this.router.navigateByUrl('');
+      return;
     }
+    this.authService.authState.subscribe((user) => {
+      this.user = user;
+      this.loggedIn = user != null;
+    });
   }
-*/
-  public onToggleSidenav = () => {
-    this.sidenavToggle.emit();
-  };
-  /*
+
   signOut(): void {
     this.authService.signOut().then(() => {
       localStorage.removeItem('token');
@@ -34,5 +40,7 @@ export class HeaderComponent implements OnInit {
       this.router.navigateByUrl('home');
     });
   }
-*/
+  public onToggleSidenav = () => {
+    this.sidenavToggle.emit();
+  };
 }
