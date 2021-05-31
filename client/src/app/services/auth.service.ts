@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError, mapTo, tap } from 'rxjs/operators';
 import { Token } from '../models/token.model';
 
@@ -15,7 +14,7 @@ export const refreshTokenKey = 'REFRESH_TOKEN';
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient) {}
 
   login(authToken: string, backend: string): Observable<boolean> {
     return this.http
@@ -88,13 +87,13 @@ export class AuthService {
           next: (token: Token) => {
             this.storeTokens(token);
           },
-        }),
-        catchError(() => {
-          this.removeTokens();
-          this.router.navigateByUrl('login');
-          return of(null);
         })
       );
+  }
+
+  removeTokens(): void {
+    localStorage.removeItem(tokenKey);
+    localStorage.removeItem(refreshTokenKey);
   }
 
   private getRefreshToken(): string | null {
@@ -114,8 +113,4 @@ export class AuthService {
     localStorage.setItem(refreshTokenKey, refreshToken);
   }
 
-  private removeTokens(): void {
-    localStorage.removeItem(tokenKey);
-    localStorage.removeItem(refreshTokenKey);
-  }
 }

@@ -10,6 +10,7 @@ import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
 import { catchError, switchMap, filter, take } from 'rxjs/operators';
 import { Token } from '../models/token.model';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +19,7 @@ export class TokenInterceptorService implements HttpInterceptor {
   private isRefreshing = false;
   private refreshTokenSubject = new BehaviorSubject<any>(null);
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -57,6 +58,11 @@ export class TokenInterceptorService implements HttpInterceptor {
           this.isRefreshing = false;
           this.refreshTokenSubject.next(token.accessToken);
           return next.handle(this.addToken(request, token.accessToken));
+        }), catchError(() => {
+          this.isRefreshing = false;
+          this.authService.removeTokens();
+          this.router.navigateByUrl('login');
+          return throwError('Refresh token invalid!');
         })
       );
     } else {

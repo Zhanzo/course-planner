@@ -4,7 +4,6 @@ import {
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { throwError } from 'rxjs';
 import { Token } from '../models/token.model';
 
 import {
@@ -16,16 +15,12 @@ import {
 } from './auth.service';
 
 describe('AuthService', () => {
-  let routerSpy: jasmine.SpyObj<Router>;
   let service: AuthService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
-    routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
-
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [{ provide: Router, useValue: routerSpy }],
     });
 
     service = TestBed.inject(AuthService);
@@ -83,7 +78,10 @@ describe('AuthService', () => {
     const request = httpMock.expectOne('/auth/invalidate-sessions/');
     expect(request.request.method).toBe('POST');
     expect(request.request.body.clientId).toBe(clientId);
-    request.flush(null, { status: 200, statusText: 'Tokens removed successfully' });
+    request.flush(null, {
+      status: 200,
+      statusText: 'Tokens removed successfully',
+    });
   });
 
   it('#getToken() should return token from localStorage', () => {
@@ -133,18 +131,13 @@ describe('AuthService', () => {
     request.flush(dummyServerToken);
   });
 
-  it('#refreshToken() should redirect to the login page if post request fails and remove tokens', () => {
-    const dummyRefreshToken = 'abcd';
+  it('#removeTokens() should remove tokens from localStorage', () => {
+    localStorage.setItem(tokenKey, '1234');
+    localStorage.setItem(refreshTokenKey, 'abcd');
 
-    localStorage.setItem(refreshTokenKey, dummyRefreshToken);
-    service.refreshToken().subscribe((response) => {
-      expect(localStorage.getItem(refreshTokenKey)).toBeNull();
-      expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('login');
-      expect(response).toBeNull();
-    });
+    service.removeTokens();
 
-    const request = httpMock.expectOne('/auth/token/');
-    expect(request.request.method).toBe('POST');
-    request.flush(null, { status: 501, statusText: 'error!' });
+    expect(localStorage.getItem(tokenKey)).toBeNull();
+    expect(localStorage.getItem(refreshTokenKey)).toBeNull();
   });
 });

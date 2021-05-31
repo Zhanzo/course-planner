@@ -5,6 +5,7 @@ import {
 } from '@angular/common/http/testing';
 import { Injectable } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { User } from '../models/user.model';
 import { AuthService } from './auth.service';
 
@@ -23,12 +24,15 @@ class MockDataService {
 }
 
 describe('TokenInterceptorService', () => {
+  let routerSpy: jasmine.SpyObj<Router>;
   let authServiceSpy: jasmine.SpyObj<AuthService>;
   let service: MockDataService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
+    routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
     authServiceSpy = jasmine.createSpyObj('AuthService', ['getToken']);
+
     authServiceSpy.getToken.and.returnValue(dummyToken);
 
     TestBed.configureTestingModule({
@@ -36,6 +40,7 @@ describe('TokenInterceptorService', () => {
       providers: [
         MockDataService,
         { provide: AuthService, useValue: authServiceSpy },
+        { provide: Router, useValue: routerSpy },
         {
           provide: HTTP_INTERCEPTORS,
           useClass: TokenInterceptorService,
