@@ -1,11 +1,14 @@
 .course-planner {
   position: absolute;
-  right: 30px;
+  right: 10px;
+  margin-right: 10px;
 }
+
 a {
   text-decoration: none;
   color: white;
   margin-left: 10px;
+  margin-right: 10px;
 }
 
 a:hover,
@@ -15,9 +18,8 @@ a:active {
 
 .navigation-items {
   list-style-type: none;
-  padding: 0px;
-  margin: 0px;
-  display: inline;
+  padding: 0;
+  margin: 0;
 }
 
 mat-toolbar {

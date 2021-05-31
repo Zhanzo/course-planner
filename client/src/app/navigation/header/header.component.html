@@ -8,27 +8,22 @@
       />
     </button>
   </div>
-  <div fxFlex fxLayout fxLayoutAlign="end" fxHide.xs class="nav">
-    <ul fxlayout fxlayoutGap="15px" class="navigation-items">
-      <li><a routerLink="/home" routerLinkActive="active">Home</a></li>
-      <li>
-        <a routerLink="/user-details" routerLinkActive="active">Profile</a>
-      </li>
-      <li>
-        <a target="_blank" href="https://liu.se/studieinfo/en">Curriculum</a>
-      </li>
-    </ul>
+  <div class="navigation-items">
+    <a routerLink="/home">Home</a>
+    <a routerLink="/user-details">Profile</a>
+    <a target="_blank" href="https://liu.se/studieinfo/en">Curriculum</a>
   </div>
   <div class="course-planner">
     <a>Course Planner</a>
+    <button class="btn btn-danger">Sign Out</button>
   </div>
 </mat-toolbar>
-
 <!--
   <div fxFlex fxLayout fxLayoutAlign="end" fxHide.xs>
     <ul fxlayout fxlayoutGap="15px" class="navigation-items">
+      <li><a routerLink="/home">Home</a></li>
       <li>
-        <a routerLink="/user-details" routerLinkActive="active">Profile</a>
+        <a routerLink="/user-details">Profile</a>
       </li>
       <li>
         <a target="_blank" href="https://liu.se/studieinfo/en">Curriculum</a>
@@ -36,33 +31,3 @@
     </ul>
   </div>
   -->
-
-<!--
-<div class="navbar navbar-default">
-    <div class="container-fluid"> 
-        <div class="navbar-header  mt-2 d-inline-block">
-            <a class="navbar-brand">CoursePlanner</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" 
-                    ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed"
-                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link waves-light" mdbWavesEffect routerLink="home">Home
-                            <span class="sr-only">(current)</span></a>
-                    </li>         
-                    <li class="nav-item"><a class="nav-link waves-light" mdbWavesEffect
-                        routerLink="user-details" routerLinkActive="active">Profile</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link waves-light" mdbWavesEffect 
-                        target="_blank" href="https://liu.se/studieinfo/en">Curriculum</a>
-                    </li>
-                </ul>
-                
-        </div>    
-    </div>
-</div>
--->
