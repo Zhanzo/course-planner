@@ -1,0 +1,22 @@
+<mat-toolbar color="primary">
+  <div class="navigation-items">
+    <div fxHide.gt-xs>
+      <button mat-icon-button (click)="onToggleSidenav()">
+        <mat-icon>menu</mat-icon>
+        <link
+          href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet"
+        />
+      </button>
+    </div>
+    <a routerLink="user-details">Home</a>
+    <!--<a routerLink="user-details">Profile</a>-->
+    <a target="_blank" href="https://liu.se/studieinfo/en">Curriculum</a>
+  </div>
+  <div class="course-planner">
+    <a>Course Planner</a>
+  </div>
+  <div *ngIf="authService.isAuthenticated()" class="sign-out">
+    <button (click)="signOut()" class="btn btn-danger">Sign Out</button>
+  </div>
+</mat-toolbar>
