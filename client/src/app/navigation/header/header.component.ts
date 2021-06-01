@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { SocialAuthService, SocialUser } from 'angularx-social-login';
 import { CoursePlan } from 'src/app/models/coursePlan.model';
+import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -14,9 +15,10 @@ export class HeaderComponent implements OnInit {
   user?: SocialUser;
   coursePlans: CoursePlan[] = [];
   loggedIn?: boolean;
+  authService: AuthService = new AuthService();
 
   constructor(
-    private authService: SocialAuthService,
+    private socialAuthService: SocialAuthService,
     private router: Router,
     private userService: UserService
   ) {}
@@ -27,14 +29,14 @@ export class HeaderComponent implements OnInit {
       this.router.navigateByUrl('');
       return;
     }
-    this.authService.authState.subscribe((user) => {
+    this.socialAuthService.authState.subscribe((user) => {
       this.user = user;
       this.loggedIn = user != null;
     });
   }
 
   signOut(): void {
-    this.authService.signOut().then(() => {
+    this.socialAuthService.signOut().then(() => {
       localStorage.removeItem('token');
       localStorage.removeItem('email');
       this.router.navigateByUrl('home');

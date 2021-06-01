@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../../models/user.model';
-import { SocialAuthService } from 'angularx-social-login';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { CoursePlan } from '../../models/coursePlan.model';
@@ -16,7 +15,6 @@ export class UserDetailsComponent implements OnInit {
   coursePlans: CoursePlan[] = [];
 
   constructor(
-    private authService: SocialAuthService,
     private userService: UserService,
     private coursePlanService: CoursePlanService,
     private router: Router
@@ -66,13 +64,5 @@ export class UserDetailsComponent implements OnInit {
     if (this.user) {
       this.router.navigateByUrl('course-plan-details');
     }
-  }
-
-  signOut(): void {
-    this.authService.signOut().then(() => {
-      localStorage.removeItem('token');
-      localStorage.removeItem('email');
-      this.router.navigateByUrl('home');
-    });
   }
 }
