@@ -12,7 +12,6 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LogInComponent } from './components/log-in/log-in.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserDetailsComponent } from './components/user-details/user-details.component';
 import { CoursePlanDetailsComponent } from './components/course-plan-details/course-plan-details.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -35,7 +34,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     ReactiveFormsModule,
     HttpClientModule,
     SocialLoginModule,
-    NgbModule,
     DragDropModule,
     FontAwesomeModule,
   ],

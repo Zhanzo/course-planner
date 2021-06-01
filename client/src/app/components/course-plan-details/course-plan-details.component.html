@@ -1,6 +1,14 @@
-<form (ngSubmit)="onSave()" [formGroup]="coursePlanForm">
-  <label for="name">Name:</label>
-  <input id="name" name="name" formControlName="name" type="text" />
+<form [formGroup]="coursePlanForm">
+  <div class="mb-3">
+    <label for="name" class="form-label">Name</label>
+    <input
+      class="form-control"
+      id="name"
+      name="name"
+      formControlName="name"
+      type="text"
+    />
+  </div>
   <div *ngIf="name.invalid || name.touched">
     <div *ngIf="name.hasError('required')" class="alert alert-danger">
       Name is required.
@@ -10,8 +18,8 @@
     </div>
   </div>
 
-  <div cdkDropListGroup>
-    <div class="example-container">
+  <div cdkDropListGroup class="row">
+    <div class="example-container col">
       <h2>Courses:</h2>
       <div
         (cdkDropListDropped)="drop($event)"
@@ -30,7 +38,7 @@
         </div>
       </div>
     </div>
-    <div class="example-container">
+    <div class="example-container col">
       <h2>Selected Courses:</h2>
       <div
         (cdkDropListDropped)="drop($event)"
@@ -50,13 +58,15 @@
     </div>
   </div>
 
-  <button
-    [disabled]="!coursePlanForm.valid"
-    class="btn btn-success"
-    type="submit"
-  >
-    Save course plan
-  </button>
+  <div class="btn-group">
+    <button
+      [disabled]="!coursePlanForm.valid"
+      class="btn btn-success"
+      (click)="onSave()"
+      type="submit"
+    >
+      Save
+    </button>
+    <button class="btn btn-danger" (click)="onDelete()">Delete</button>
+  </div>
 </form>
-
-<button class="btn btn-danger" (click)="onDelete()">Delete course plan</button>

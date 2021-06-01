@@ -5,9 +5,13 @@ class Course(models.Model):
     code = models.CharField(max_length=6)
     name = models.CharField(max_length=100)
     credits = models.IntegerField()
+    period = models.CharField(max_length=3)
     semester = models.CharField(max_length=10)
     level = models.CharField(max_length=3)
     module = models.CharField(max_length=10)
+
+    class Meta:
+        ordering = ['code']
 
 
 class CoursePlan(models.Model):
