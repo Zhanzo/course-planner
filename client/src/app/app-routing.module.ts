@@ -6,17 +6,18 @@ import { CoursePlanDetailsComponent } from './components/course-plan-details/cou
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
-  { path: '', component: LogInComponent },
+  { path: '', redirectTo: 'user' },
   {
-    path: 'user-details',
+    path: 'user',
     component: UserDetailsComponent,
     canActivate: [AuthGuard],
   },
   {
-    path: 'course-plan-details',
+    path: 'course-plan/:id',
     component: CoursePlanDetailsComponent,
     canActivate: [AuthGuard],
   },
+  { path: 'login', component: LogInComponent },
 ];
 
 @NgModule({

@@ -5,10 +5,9 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { Router } from '@angular/router';
-import { CourseService } from '../../services/course.service';
-import { CoursePlanService } from '../../services/course-plan.service';
-import { UserService } from '../../services/user.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { CourseService } from 'src/app/services/course.service';
+import { CoursePlanService } from 'src/app/services/course-plan.service';
 import { CoursePlan } from 'src/app/models/coursePlan.model';
 import { Course } from 'src/app/models/course.model';
 
@@ -18,23 +17,22 @@ import { Course } from 'src/app/models/course.model';
   styleUrls: ['./course-plan-details.component.css'],
 })
 export class CoursePlanDetailsComponent implements OnInit {
-  userId?: string;
-  coursePlanId?: string;
-  name = this.formBuilder.control('', [
+  title = this.formBuilder.control('', [
     Validators.required,
     Validators.minLength(3),
   ]);
+  coursePlan?: CoursePlan;
   courses: Course[] = [];
   selectedCourses: Course[] = [];
   coursePlanForm = this.formBuilder.group({
-    name: this.name,
+    title: this.title,
   });
 
   constructor(
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     private courseService: CourseService,
     private coursePlanService: CoursePlanService,
-    private userService: UserService,
     private formBuilder: FormBuilder
   ) {}
 
@@ -57,49 +55,58 @@ export class CoursePlanDetailsComponent implements OnInit {
 
   onSave(): void {
     // Send to database and go back
-    if (this.coursePlanId) {
-      this.coursePlanService.update(
-        this.coursePlanId,
-        this.name.value,
-        this.selectedCourses
-      );
-    } else if (this.userId) {
-      const coursePlan: CoursePlan = {
-        owner: this.userId,
-        title: this.name.value,
-        courses: this.selectedCourses,
-      };
-      this.coursePlanService.create(coursePlan);
+    if (this.coursePlan) {
+      this.coursePlanService
+        .update(this.coursePlan.id, this.title.value, this.selectedCourses)
+        .subscribe((success: boolean) => {
+          if (success) {
+            this.router.navigateByUrl('user');
+          } else {
+            alert('Course plan could not be saved');
+          }
+        });
+    } else {
+      this.coursePlanService
+        .create(this.title.value, this.selectedCourses)
+        .subscribe((success: boolean) => {
+          if (success) {
+            this.router.navigateByUrl('user');
+          } else {
+            alert('Course plan could not be saved.');
+          }
+        });
     }
   }
 
   onDelete(): void {
-    if (this.coursePlanId) {
-      this.coursePlanService.delete(this.coursePlanId);
+    if (this.coursePlan) {
+      this.coursePlanService
+        .delete(this.coursePlan.id)
+        .subscribe((success: boolean) => {
+          if (success) {
+            this.router.navigateByUrl('user');
+          } else {
+            alert('Course plan could not be deleted');
+          }
+        });
     } else {
-      this.router.navigateByUrl('user-details');
+      this.router.navigateByUrl('user');
     }
   }
 
   ngOnInit(): void {
-    const userId = this.userService.getUserId();
-
-    if (!userId) {
-      return;
-    }
-
-    this.userId = userId;
     this.courseService.get().subscribe(
       (courses) => {
         this.courses = courses;
-        const coursePlanId = localStorage.getItem('coursePlanId');
-        if (coursePlanId) {
-          this.coursePlanService.get(coursePlanId).subscribe((coursePlan) => {
-            this.coursePlanId = coursePlanId;
-            console.log(coursePlan.courses);
-            this.moveCourseToSelected(coursePlan);
-            this.name.setValue(coursePlan.title);
-          });
+        const coursePlanId = Number(this.activatedRoute.snapshot.params.id);
+        if (coursePlanId !== -1) {
+          this.coursePlanService
+            .get(coursePlanId)
+            .subscribe((coursePlan: CoursePlan) => {
+              this.coursePlan = coursePlan;
+              this.moveCourseToSelected(this.coursePlan);
+              this.title.setValue(this.coursePlan.title);
+            });
         }
       },
       (error) => console.log(error)
@@ -111,8 +118,10 @@ export class CoursePlanDetailsComponent implements OnInit {
     for (let i = 0; i < this.courses.length; i++) {
       const course = this.courses[i];
       for (const coursePlanCourse of coursePlan.courses) {
-        if (course.id === coursePlanCourse.id) {
-          console.log('Moving course...');
+        if (
+          course.id === coursePlanCourse.id &&
+          course.semester === coursePlanCourse.semester
+        ) {
           this.selectedCourses.push(course);
           this.courses.splice(i, 1);
           i--;

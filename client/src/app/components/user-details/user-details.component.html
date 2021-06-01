@@ -1,10 +1,10 @@
 <div>
-  <h2>Course Plans</h2>
+  <h1>Course Plans</h1>
   <div>
     <ul class="list-group">
       <li *ngFor="let coursePlan of coursePlans" class="list-group-item">
         {{ coursePlan.title }}
-        <button (click)="onSelect(coursePlan)" class="btn btn-success">
+        <button routerLink="/course-plan/{{ coursePlan.id }}" class="btn btn-success">
           Edit
         </button>
         <button (click)="onDelete(coursePlan)" class="btn btn-danger">
@@ -14,6 +14,6 @@
     </ul>
   </div>
 
-  <button (click)="onCreate()" class="btn btn-success">New</button>
-  <button (click)="signOut()" class="btn btn-danger">Sign Out</button>
+  <button routerLink="/course-plan/-1" class="btn btn-success">New</button>
+  <button routerLink="/login" (click)="logOut()" class="btn btn-danger">Sign Out</button>
 </div>

@@ -8,7 +8,6 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
-import { UserService } from '../services/user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +15,6 @@ import { UserService } from '../services/user.service';
 export class AuthGuard implements CanActivate {
   constructor(
     private auth: AuthService,
-    private userService: UserService,
     private router: Router
   ) {}
   canActivate(
@@ -27,10 +25,10 @@ export class AuthGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    if (this.auth.isAuthenticated() && this.userService.getUserId() != null) {
+    if (this.auth.isAuthenticated()) {
       return true;
     } else {
-      this.router.navigateByUrl('');
+      this.router.navigate(['login']);
       return false;
     }
   }

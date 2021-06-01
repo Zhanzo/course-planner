@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
+import { Title, BrowserModule } from '@angular/platform-browser';
 import {
   GoogleLoginProvider,
   FacebookLoginProvider,
@@ -39,6 +39,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   ],
   providers: [
     [AuthGuard],
+    [Title],
     {
       provide: LocationStrategy,
       useClass: HashLocationStrategy,

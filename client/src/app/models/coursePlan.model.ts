@@ -1,7 +1,7 @@
 import { Course } from './course.model';
 
 export interface CoursePlan {
-  id?: number;
+  id: number;
   owner: string;
   title: string;
   courses: Course[];

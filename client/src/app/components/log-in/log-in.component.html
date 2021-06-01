@@ -1,18 +1,16 @@
 <div>
-  <div *ngIf="!loggedIn">
-    <button
-      (click)="signInWithGoogle()"
-      class="btn btn-primary btn-google btn-social"
-    >
-      <fa-icon [icon]="faGoogle"></fa-icon>
-      Sign in with Google
-    </button>
-    <button
-      (click)="signInWithFacebook()"
-      class="btn btn-primary btn-facebook btn-social"
-    >
-      <fa-icon [icon]="faFacebookF"></fa-icon>
-      Sign in with Facebook
-    </button>
-  </div>
+  <button
+    (click)="logInWithGoogle()"
+    class="btn btn-primary btn-google btn-social"
+  >
+    <fa-icon [icon]="faGoogle"></fa-icon>
+    Log in with Google
+  </button>
+  <button
+    (click)="logInWithFacebook()"
+    class="btn btn-primary btn-facebook btn-social"
+  >
+    <fa-icon [icon]="faFacebookF"></fa-icon>
+    Log in with Facebook
+  </button>
 </div>
