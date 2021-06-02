@@ -7,18 +7,18 @@ import { AuthGuard } from './guards/auth.guard';
 import { CommonModule } from '@angular/common';
 
 const routes: Routes = [
-  { path: 'home', component: LogInComponent },
+  { path: '', redirectTo: 'user', pathMatch: 'full' },
   {
-    path: 'user-details',
+    path: 'user',
     component: UserDetailsComponent,
     canActivate: [AuthGuard],
   },
   {
-    path: 'course-plan-details',
+    path: 'course-plan/:id',
     component: CoursePlanDetailsComponent,
     canActivate: [AuthGuard],
   },
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'login', component: LogInComponent },
 ];
 
 @NgModule({

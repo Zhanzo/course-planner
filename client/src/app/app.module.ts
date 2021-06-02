@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
+import { Title, BrowserModule } from '@angular/platform-browser';
 import {
   GoogleLoginProvider,
   FacebookLoginProvider,
@@ -69,6 +69,7 @@ import { MatListModule } from '@angular/material/list';
   ],
   providers: [
     [AuthGuard],
+    [Title],
     {
       provide: LocationStrategy,
       useClass: HashLocationStrategy,

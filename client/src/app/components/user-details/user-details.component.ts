@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../services/user.service';
-import { Router } from '@angular/router';
-import { CoursePlanService } from '../../services/course-plan.service';
+import { UserService } from 'src/app/services/user.service';
+import { CoursePlanService } from 'src/app/services/course-plan.service';
 import { CoursePlan } from 'src/app/models/coursePlan.model';
 import { User } from 'src/app/models/user.model';
 
@@ -16,18 +15,10 @@ export class UserDetailsComponent implements OnInit {
   constructor(
     private userService: UserService,
     private coursePlanService: CoursePlanService,
-    private router: Router
   ) {}
 
   ngOnInit(): void {
-    localStorage.removeItem('coursePlanId');
-
-    const userId = this.userService.getUserId();
-    if (!userId) {
-      return;
-    }
-
-    this.userService.get(userId).subscribe((user: User) => {
+    this.userService.getCurrentUser().subscribe((user: User) => {
       // get course plans
       for (const coursePlanId of user.coursePlans) {
         this.coursePlanService
@@ -37,22 +28,18 @@ export class UserDetailsComponent implements OnInit {
     });
   }
 
-  onSelect(coursePlan: CoursePlan): void {
-    if (coursePlan.id) {
-      localStorage.setItem('coursePlanId', String(coursePlan.id));
-      this.router.navigateByUrl('course-plan-details');
-    }
-  }
-
   onDelete(coursePlan: CoursePlan): void {
     if (coursePlan.id) {
-      this.coursePlanService.delete(coursePlan.id);
-      const index = this.coursePlans.indexOf(coursePlan);
-      this.coursePlans.splice(index, 1);
+      this.coursePlanService
+        .delete(coursePlan.id)
+        .subscribe((success: boolean) => {
+          if (success) {
+            const index = this.coursePlans.indexOf(coursePlan);
+            this.coursePlans.splice(index, 1);
+          } else {
+            alert('Course plan could not be deleted');
+          }
+        });
     }
-  }
-
-  onCreate(): void {
-    this.router.navigateByUrl('course-plan-details');
   }
 }

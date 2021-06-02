@@ -9,14 +9,13 @@
         />
       </button>
     </div>
-    <a routerLink="user-details">Home</a>
-    <!--<a routerLink="user-details">Profile</a>-->
+    <a routerLink="user">Home</a>
     <a target="_blank" href="https://liu.se/studieinfo/en">Curriculum</a>
   </div>
   <div class="course-planner">
     <a>Course Planner</a>
   </div>
   <div *ngIf="authService.isAuthenticated()" class="sign-out">
-    <button (click)="signOut()" class="btn btn-danger">Sign Out</button>
+    <button (click)="logOut()" class="btn btn-danger">Log Out</button>
   </div>
 </mat-toolbar>
