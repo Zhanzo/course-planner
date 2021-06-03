@@ -6,7 +6,8 @@
 }
 
 .example-list {
-  height: 50vh;
+  height: 45vh;
+  width: 40vw;
   border: solid 0.1em #ccc;
   background: white;
   border-radius: 0.1em;

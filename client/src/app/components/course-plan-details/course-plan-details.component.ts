@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import {
   CdkDragDrop,
   moveItemInArray,
@@ -21,6 +21,7 @@ export class CoursePlanDetailsComponent implements OnInit {
     Validators.required,
     Validators.minLength(3),
   ]);
+  searchText = '';
   coursePlan?: CoursePlan;
   courses: Course[] = [];
   selectedCourses: Course[] = [];

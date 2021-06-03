@@ -17,6 +17,7 @@
       Name must be at least 3 characters long.
     </div>
   </div>
+
   <h4 class="table-header">Coures Selection Statistics</h4>
   <table class="statistics-table">
     <tr>
@@ -30,9 +31,18 @@
       <td>{{ basicCredits }}</td>
     </tr>
   </table>
+
   <div cdkDropListGroup class="row">
     <div class="example-container col">
       <h2>Courses:</h2>
+      <form>
+        <input
+          type="search"
+          [(ngModel)]="searchText"
+          placeholder="Search text"
+          class="form-control"
+        />
+      </form>
       <div
         (cdkDropListDropped)="drop($event)"
         [cdkDropListData]="courses"
@@ -40,7 +50,11 @@
         cdkDropListSortingDisabled
         class="example-list"
       >
-        <div *ngFor="let course of courses" cdkDrag class="example-box">
+        <div
+          *ngFor="let course of courses | coursefilter: searchText"
+          cdkDrag
+          class="example-box"
+        >
           {{ course.code }}
           {{ course.name }}
           {{ course.credits }}

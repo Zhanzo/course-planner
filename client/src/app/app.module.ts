@@ -24,6 +24,7 @@ import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.com
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MaterialModule } from './material.module';
+import { CourseFilterPipe } from './filters/course-filter.pipe';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { MaterialModule } from './material.module';
     CoursePlanDetailsComponent,
     HeaderComponent,
     SidenavListComponent,
+    CourseFilterPipe,
   ],
   imports: [
     BrowserModule,
