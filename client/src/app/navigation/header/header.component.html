@@ -1,21 +1,21 @@
 <mat-toolbar color="primary">
   <div class="navigation-items">
-    <div fxHide.gt-xs>
       <button mat-icon-button (click)="onToggleSidenav()">
         <mat-icon>menu</mat-icon>
-        <link
-          href="https://fonts.googleapis.com/icon?family=Material+Icons"
-          rel="stylesheet"
-        />
       </button>
-    </div>
-    <a routerLink="user">Home</a>
+    <a routerLink="user" class="middle-nav-item">Home</a>
     <a target="_blank" href="https://liu.se/studieinfo/en">Curriculum</a>
   </div>
-  <div class="course-planner">
+  <div class="header-title">
     <a>Course Planner</a>
   </div>
-  <div *ngIf="authService.isAuthenticated()" class="sign-out">
-    <button (click)="logOut()" class="btn btn-danger">Log Out</button>
+  <div class="sign-out">
+    <button
+      (click)="logOut()"
+      class="btn btn-danger"
+      [hidden]="!authService.isAuthenticated()"
+    >
+      Log Out
+    </button>
   </div>
 </mat-toolbar>
