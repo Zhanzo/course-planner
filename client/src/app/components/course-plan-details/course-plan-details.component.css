@@ -18,6 +18,10 @@
   cursor: move;
 }
 
+.colliding {
+  background-color: red;
+}
+
 .cdk-drag-preview {
   box-sizing: border-box;
   border-radius: 0.1em;

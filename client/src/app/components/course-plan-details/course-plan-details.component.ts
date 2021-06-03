@@ -55,6 +55,8 @@ export class CoursePlanDetailsComponent implements OnInit {
         event.previousIndex,
         event.currentIndex
       );
+      this.sortCourses();
+      this.sortSelectedCourses();
       this.statistics();
     }
   }
@@ -100,10 +102,47 @@ export class CoursePlanDetailsComponent implements OnInit {
     }
   }
 
+  hasCollision(course: Course): boolean {
+    for (const otherCourse of this.selectedCourses) {
+      if (course.code === otherCourse.code) {
+        continue;
+      } else if (course.semester === otherCourse.semester) {
+
+        if (course.period.length === 3 && otherCourse.period.length === 3) {
+          if (
+            course.module === otherCourse.module ||
+            course.module[0] === otherCourse.module[0] ||
+            course.module[2] === otherCourse.module[2]
+          ) {
+            return true;
+          }
+        } else if (course.period.length === 1 && otherCourse.period.length === 3) {
+          const otherCourseModule = otherCourse.module.split(',');
+          const periodIdx = Number(course.period) - 1;
+
+          if (course.module === otherCourseModule[periodIdx]) {
+            return true;
+          }
+        } else if (course.period.length === 3 && otherCourse.period.length === 1) {
+          const courseModule = course.module.split(',');
+          const periodIdx = Number(otherCourse.period) - 1;
+
+          if (otherCourse.module === courseModule[periodIdx]) {
+            return true;
+          }
+        } else if (course.period === otherCourse.period && course.module === otherCourse.module) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   ngOnInit(): void {
     this.courseService.get().subscribe(
       (courses) => {
         this.courses = courses;
+        this.sortCourses();
         const coursePlanId = Number(this.activatedRoute.snapshot.params.id);
         if (coursePlanId !== -1) {
           this.coursePlanService
@@ -111,6 +150,7 @@ export class CoursePlanDetailsComponent implements OnInit {
             .subscribe((coursePlan: CoursePlan) => {
               this.coursePlan = coursePlan;
               this.moveCourseToSelected(this.coursePlan);
+              this.sortSelectedCourses();
               this.statistics();
               this.title.setValue(this.coursePlan.title);
             });
@@ -118,6 +158,45 @@ export class CoursePlanDetailsComponent implements OnInit {
       },
       (error) => console.log(error)
     );
+  }
+
+  private sortCourses(): void {
+    this.courses.sort((a, b) => {
+      const compareSemester = a.semester.localeCompare(b.semester);
+      const comparePeriod = a.period.localeCompare(b.period);
+      const compareModule = a.module.localeCompare(b.module);
+      return compareSemester || comparePeriod || compareModule;
+    });
+  }
+
+  private sortSelectedCourses(): void {
+    this.selectedCourses.sort((a, b) => {
+      const compareSemester = a.semester.localeCompare(b.semester);
+      const comparePeriod = a.period.localeCompare(b.period);
+      const compareModule = a.module.localeCompare(b.module);
+      return compareSemester || comparePeriod || compareModule;
+    });
+  }
+
+  private checkCollidingCourses(): void {
+    for (const course1 of this.selectedCourses) {
+      for (const course2 of this.selectedCourses) {
+        if (course1 === course2) {
+          continue;
+        }
+
+        if (course1.semester === course2.semester) {
+          const course1Periods = course1.period.split(',');
+          const course2Periods = course2.period.split(',');
+
+          if (course1.period === course2.period) {
+            if (course1.module === course2.module) {
+              continue;
+            }
+          }
+        }
+      }
+    }
   }
 
   private moveCourseToSelected(coursePlan: CoursePlan): void {
