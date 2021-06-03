@@ -27,6 +27,9 @@ export class CoursePlanDetailsComponent implements OnInit {
   coursePlanForm = this.formBuilder.group({
     title: this.title,
   });
+  totalCredits?: number;
+  advancedCredits?: number;
+  basicCredits?: number;
 
   constructor(
     private router: Router,
@@ -50,6 +53,7 @@ export class CoursePlanDetailsComponent implements OnInit {
         event.previousIndex,
         event.currentIndex
       );
+      this.statistics();
     }
   }
 
@@ -105,6 +109,7 @@ export class CoursePlanDetailsComponent implements OnInit {
             .subscribe((coursePlan: CoursePlan) => {
               this.coursePlan = coursePlan;
               this.moveCourseToSelected(this.coursePlan);
+              this.statistics();
               this.title.setValue(this.coursePlan.title);
             });
         }
@@ -125,9 +130,23 @@ export class CoursePlanDetailsComponent implements OnInit {
           this.selectedCourses.push(course);
           this.courses.splice(i, 1);
           i--;
+
           break;
         }
       }
+    }
+  }
+
+  private statistics(): void {
+    this.advancedCredits = 0;
+    this.basicCredits = 0;
+    for (const course of this.selectedCourses) {
+      if (course.level === 'A1X') {
+        this.advancedCredits += course.credits;
+      } else if (course.level === 'G2X' || course.level === 'G1X') {
+        this.basicCredits += course.credits;
+      }
+      this.totalCredits = this.advancedCredits + this.basicCredits;
     }
   }
 }
