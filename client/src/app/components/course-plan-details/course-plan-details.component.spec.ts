@@ -8,6 +8,7 @@ import {
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
+import { CourseFilterPipe } from 'src/app/filters/course-filter.pipe';
 import { Course } from 'src/app/models/course.model';
 import { CoursePlan } from 'src/app/models/coursePlan.model';
 import { CoursePlanService } from 'src/app/services/course-plan.service';
@@ -87,7 +88,7 @@ describe('CoursePlanDetailsComponent with a CoursePlan', () => {
     courseServiceSpy.get.and.returnValue(of(dummyCourses.slice()));
 
     await TestBed.configureTestingModule({
-      declarations: [CoursePlanDetailsComponent],
+      declarations: [CoursePlanDetailsComponent, CourseFilterPipe],
       providers: [
         FormBuilder,
         HttpClientModule,
@@ -171,7 +172,7 @@ describe('CoursePlanDetailsComponent without a CoursePlan', () => {
     courseServiceSpy.get.and.returnValue(of(dummyCourses.slice()));
 
     await TestBed.configureTestingModule({
-      declarations: [CoursePlanDetailsComponent],
+      declarations: [CoursePlanDetailsComponent, CourseFilterPipe],
       providers: [
         FormBuilder,
         HttpClientModule,

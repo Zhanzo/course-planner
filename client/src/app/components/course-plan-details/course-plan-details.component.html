@@ -1,5 +1,19 @@
 <form [formGroup]="coursePlanForm">
-  <div class="mb-3">
+  <h4 class="table-header">Course Selection Statistics</h4>
+  <table class="statistics-table">
+    <tr>
+      <th class="statistics-header">Credits</th>
+      <th class="statistics-header">Advanced Credits</th>
+      <th class="statistics-header">Basic Credits</th>
+    </tr>
+    <tr>
+      <td class="statistics-data">{{ totalCredits }}</td>
+      <td class="statistics-data">{{ advancedCredits }}</td>
+      <td class="statistics-data">{{ basicCredits }}</td>
+    </tr>
+  </table>
+
+  <div class="mb-2">
     <label for="title" class="form-label">Title</label>
     <input
       class="form-control"
@@ -18,20 +32,6 @@
     </div>
   </div>
 
-  <h4 class="table-header">Coures Selection Statistics</h4>
-  <table class="statistics-table">
-    <tr>
-      <th>Credits</th>
-      <th>Advanced Credits</th>
-      <th>Basic Credits</th>
-    </tr>
-    <tr>
-      <td>{{ totalCredits }}</td>
-      <td>{{ advancedCredits }}</td>
-      <td>{{ basicCredits }}</td>
-    </tr>
-  </table>
-
   <div cdkDropListGroup class="row">
     <div class="example-container col">
       <h2>Courses:</h2>
@@ -43,44 +43,85 @@
           class="form-control"
         />
       </form>
-      <div
-        (cdkDropListDropped)="drop($event)"
-        [cdkDropListData]="courses"
-        cdkDropList
-        cdkDropListSortingDisabled
-        class="example-list"
-      >
-        <div
-          *ngFor="let course of courses | coursefilter: searchText"
-          cdkDrag
-          class="example-box"
+      <table class="table example-list">
+        <thead>
+          <tr>
+            <th scope="col">Course code</th>
+            <th scope="col">Course name</th>
+            <th scope="col">Credits</th>
+            <th scope="col">Level</th>
+            <th scope="col">Module</th>
+            <th period="col">Period</th>
+            <th scope="col">Semester</th>
+          </tr>
+        </thead>
+        <tbody
+          (cdkDropListDropped)="drop($event)"
+          [cdkDropListData]="courses"
+          cdkDropList
+          cdkDropListSortingDisabled
         >
-          {{ course.code }}
-          {{ course.name }}
-          {{ course.credits }}
-          {{ course.semester }}
-          {{ course.level }}
-          {{ course.module }}
-        </div>
-      </div>
+          <tr
+            cdkDrag
+            *ngFor="let course of courses | coursefilter: searchText"
+            class="example-box"
+          >
+            <td>{{ course.code }}</td>
+            <td>{{ course.name }}</td>
+            <td>{{ course.credits }}</td>
+            <td>{{ course.level }}</td>
+            <td>{{ course.module }}</td>
+            <td>{{ course.period }}</td>
+            <td>{{ course.semester }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+
     <div class="example-container col">
       <h2>Selected Courses:</h2>
-      <div
-        (cdkDropListDropped)="drop($event)"
-        [cdkDropListData]="selectedCourses"
-        cdkDropList
-        class="example-list"
-      >
-        <div *ngFor="let course of selectedCourses" cdkDrag class="example-box">
-          {{ course.code }}
-          {{ course.name }}
-          {{ course.credits }}
-          {{ course.semester }}
-          {{ course.level }}
-          {{ course.module }}
-        </div>
-      </div>
+
+      <form>
+        <input
+          type="search"
+          [(ngModel)]="searchTextSelected"
+          placeholder="Search text"
+          class="form-control"
+        />
+      </form>
+      <table class="table example-list">
+        <thead>
+          <tr>
+            <th scope="col">Course code</th>
+            <th scope="col">Course name</th>
+            <th scope="col">Credits</th>
+            <th scope="col">Level</th>
+            <th scope="col">Module</th>
+            <th period="col">Period</th>
+            <th scope="col">Semester</th>
+          </tr>
+        </thead>
+        <tbody
+          (cdkDropListDropped)="drop($event)"
+          [cdkDropListData]="selectedCourses"
+          cdkDropList
+          cdkDropListSortingDisabled
+        >
+          <tr
+            cdkDrag
+            *ngFor="let course of selectedCourses | coursefilter: searchTextSelected"
+            class="example-box"
+          >
+            <td>{{ course.code }}</td>
+            <td>{{ course.name }}</td>
+            <td>{{ course.credits }}</td>
+            <td>{{ course.level }}</td>
+            <td>{{ course.module }}</td>
+            <td>{{ course.period }}</td>
+            <td>{{ course.semester }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 

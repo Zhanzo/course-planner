@@ -22,6 +22,7 @@ export class CoursePlanDetailsComponent implements OnInit {
     Validators.minLength(3),
   ]);
   searchText = '';
+  searchTextSelected = '';
   coursePlan?: CoursePlan;
   courses: Course[] = [];
   selectedCourses: Course[] = [];

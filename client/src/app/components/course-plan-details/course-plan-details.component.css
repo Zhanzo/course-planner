@@ -1,5 +1,4 @@
 .example-container {
-  margin: 0 2em 1em 0;
   display: inline-block;
   vertical-align: top;
   overflow: hidden;
@@ -8,25 +7,15 @@
 .example-list {
   height: 45vh;
   width: 40vw;
-  border: solid 0.1em #ccc;
   background: white;
   border-radius: 0.1em;
+  border: solid 0.1em #ccc;
   display: block;
   overflow-y: auto;
 }
 
 .example-box {
-  padding: 2em 1em;
-  border-bottom: solid 0.1em #ccc;
-  color: rgba(0, 0, 0, 0.87);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
   cursor: move;
-  background: white;
-  font-size: 14px;
 }
 
 .cdk-drag-preview {
@@ -35,6 +24,7 @@
   box-shadow: 0 0.2em 0.2em -0.1em rgba(0, 0, 0, 0.2),
     0 0.5em 0.6em 0.1em rgba(0, 0, 0, 0.14),
     0 0.1em 0.9em 0.1em rgba(0, 0, 0, 0.12);
+  padding: 0.4em;
 }
 
 .cdk-drag-placeholder {
@@ -55,27 +45,26 @@
 
 .table-header {
   text-align: center;
-  margin-top: 20px;
-  margin-bottom: 10px;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
 }
+
 .statistics-table {
   margin-left: auto;
   margin-right: auto;
   background-color: rgb(160, 191, 248);
+  margin-bottom: 1em;
 }
 
-table,
-th,
-td {
-  border: 5px solid rgba(32, 59, 117, 0.616);
-  width: 500px;
+.statistics-table,
+.statistics-header,
+.statistics-data {
+  border: 0.2em solid rgba(32, 59, 117, 0.616);
+  width: 30vw;
 }
 
-th,
-td {
-  padding: 10px;
+.statistics-header,
+.statistics-data {
+  padding: 0.5em;
   text-align: center;
-}
-table {
-  margin-bottom: 20px;
 }
