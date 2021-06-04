@@ -115,6 +115,11 @@
               cdkDrag
               *ngFor="let course of selectedCourses | coursefilter: searchText"
               class="example-box"
+              [ngStyle]="
+                hasCollision(course)
+                  ? { 'background-color': 'red' }
+                  : { 'background-color': 'white' }
+              "
             >
               <td class="course-code">{{ course.code }}</td>
               <td class="course-name">{{ course.name }}</td>
