@@ -113,7 +113,9 @@
           >
             <tr
               cdkDrag
-              *ngFor="let course of selectedCourses | coursefilter: searchText"
+              *ngFor="
+                let course of selectedCourses | coursefilter: searchTextSelected
+              "
               class="example-box"
               [ngStyle]="
                 hasCollision(course)
