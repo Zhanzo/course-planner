@@ -46,9 +46,11 @@ export class CoursePlanDetailsComponent implements OnInit {
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
-        event.previousIndex,
+        event.previousContainer.data.findIndex(course => course === event.item.data),
         event.currentIndex
       );
+      this.searchText = '';
+      this.searchTextSelected = '';
       this.sortCourses();
       this.sortSelectedCourses();
       this.statistics();
