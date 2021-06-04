@@ -1,0 +1,15 @@
+mat-sidenav-container,
+mat-sidenav-content,
+mat-sidenav {
+  height: 100vh;
+}
+mat-sidenav {
+  width: 15vw;
+}
+
+main {
+  padding: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

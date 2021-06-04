@@ -1,0 +1,37 @@
+h1 {
+  text-align: center;
+}
+
+.list-group {
+  margin-top: 2em;
+  height: 50vh;
+  display: block;
+  min-width: 50vw;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.list-group-item {
+  display: flex;
+}
+
+.btn-group {
+  text-align: right;
+  margin-left: auto;
+  display: flex;
+  flex: 0 0 10em;
+  justify-content: flex-end;
+}
+
+.plan-title {
+  display: flex;
+  flex: 1;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.new-btn {
+    margin-top: 2em;
+    display: flex;
+    justify-content: center;
+}

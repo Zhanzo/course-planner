@@ -1,0 +1,41 @@
+.box {
+  display: flex;
+  height: 15vh;
+  flex-direction: column;
+}
+
+.btn-facebook {
+  background-color: #3b5998;
+}
+
+.btn-google {
+  background-color: #dd4b39;
+}
+
+.btn-social {
+  color: #fff;
+  border-color: rgba(0, 0, 0, 0.2);
+  position: relative;
+  padding-left: 3em;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 14em;
+  margin: auto;
+}
+
+.btn-social:hover {
+  color: #eee;
+}
+
+.btn-social :first-child {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2.5em;
+  padding: 0.5em;
+  text-align: center;
+  border-right: 0.1em solid rgba(0, 0, 0, 0.2);
+}

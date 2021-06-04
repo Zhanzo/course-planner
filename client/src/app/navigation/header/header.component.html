@@ -1,0 +1,21 @@
+<mat-toolbar color="primary">
+  <div class="navigation-items">
+      <button mat-icon-button (click)="onToggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    <a routerLink="user" class="middle-nav-item">Home</a>
+    <a target="_blank" href="https://liu.se/studieinfo/en">Curriculum</a>
+  </div>
+  <div class="header-title">
+    <a>Course Planner</a>
+  </div>
+  <div class="sign-out">
+    <button
+      (click)="logOut()"
+      class="btn btn-danger"
+      [hidden]="!authService.isAuthenticated()"
+    >
+      Log Out
+    </button>
+  </div>
+</mat-toolbar>

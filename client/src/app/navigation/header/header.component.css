@@ -1,0 +1,42 @@
+a {
+  text-decoration: none;
+  color: white;
+}
+
+a:hover,
+a:active {
+  color: lightgray;
+}
+
+mat-toolbar {
+  border-radius: 0.1em;
+  display: flex;
+}
+
+.navigation-items {
+  list-style-type: none;
+  font-size: medium;
+  display: flex;
+  flex: 1;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.middle-nav-item {
+  margin-right: 1em;
+}
+
+.header-title {
+  font-style: oblique;
+  font-size: xx-large;
+  font-weight: bold;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+}
+
+.sign-out {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+}

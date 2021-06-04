@@ -1,19 +1,26 @@
 <div>
-  <h2>Course Plans</h2>
+  <h1>Course Plans</h1>
+  <div class="new-btn">
+    <a routerLink="/course-plan/-1" class="btn btn-success">New Course Plan</a>
+  </div>
   <div>
     <ul class="list-group">
       <li *ngFor="let coursePlan of coursePlans" class="list-group-item">
-        {{ coursePlan.title }}
-        <button (click)="onSelect(coursePlan)" class="btn btn-success">
-          Edit
-        </button>
-        <button (click)="onDelete(coursePlan)" class="btn btn-danger">
-          Delete
-        </button>
+        <p class="plan-title">
+          {{ coursePlan.title }}
+        </p>
+        <div class="btn-group">
+          <a
+            routerLink="/course-plan/{{ coursePlan.id }}"
+            class="btn btn-success"
+          >
+            Edit
+          </a>
+          <button (click)="onDelete(coursePlan)" class="btn btn-danger">
+            Delete
+          </button>
+        </div>
       </li>
     </ul>
   </div>
-
-  <button (click)="onCreate()" class="btn btn-success">New</button>
-  <button (click)="signOut()" class="btn btn-danger">Sign Out</button>
 </div>

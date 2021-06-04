@@ -9,17 +9,17 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['email', 'course_plans']
+        fields = ['id', 'email', 'course_plans']
        
 
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
-        fields = ['id', 'code', 'name', 'credits', 'semester', 'level', 'module']
+        fields = ['id', 'code', 'name', 'credits', 'semester', 'level', 'period', 'module']
 
 
 class CoursePlanSerializer(serializers.ModelSerializer):
-    owner = serializers.ReadOnlyField(source='owner.email')
+    owner = serializers.ReadOnlyField(source='owner.id')
     courses = CourseSerializer(many=True, read_only=True)
 
     class Meta:
