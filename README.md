@@ -1,14 +1,24 @@
 # Screencasts
 
-# Project screencast
+## Project screencast
 
 https://www.youtube.com/watch?v=PYjJgWbJo80&t=1s
+
+## Individual screencasts
+
+### Robin Andersson
+
+https://www.youtube.com/watch?v=HNgZ2XpIi4E
 
 ## Midterm screencast
 
 https://www.youtube.com/watch?v=Ds_lICjioW8
 
 # Heroku links
+
+Login with Google should work with any user, however for Facebook a test user is available with credentials:
+email: vbfdmlhiwr_1622795596@tfbnw.net
+password: courseplanner
 
 ## Production
 
