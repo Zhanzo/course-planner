@@ -1,5 +1,8 @@
 <div>
   <h1>Course Plans</h1>
+  <div class="new-btn">
+    <a routerLink="/course-plan/-1" class="btn btn-success">New Course Plan</a>
+  </div>
   <div>
     <ul class="list-group">
       <li *ngFor="let coursePlan of coursePlans" class="list-group-item">
@@ -20,6 +23,4 @@
       </li>
     </ul>
   </div>
-
-  <a routerLink="/course-plan/-1" class="btn btn-success new-btn">New Course Plan</a>
 </div>

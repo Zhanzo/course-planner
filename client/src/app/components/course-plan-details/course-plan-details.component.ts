@@ -29,9 +29,9 @@ export class CoursePlanDetailsComponent implements OnInit {
   coursePlanForm = this.formBuilder.group({
     title: this.title,
   });
-  totalCredits?: number;
-  advancedCredits?: number;
-  basicCredits?: number;
+  totalCredits?: number = 0;
+  advancedCredits?: number = 0;
+  basicCredits?: number = 0;
 
   constructor(
     private router: Router,
@@ -42,13 +42,7 @@ export class CoursePlanDetailsComponent implements OnInit {
   ) {}
 
   drop(event: CdkDragDrop<Course[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
-    } else {
+    if (event.previousContainer !== event.container) {
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
@@ -107,7 +101,6 @@ export class CoursePlanDetailsComponent implements OnInit {
       if (course.code === otherCourse.code) {
         continue;
       } else if (course.semester === otherCourse.semester) {
-
         if (course.period.length === 3 && otherCourse.period.length === 3) {
           if (
             course.module === otherCourse.module ||
@@ -116,21 +109,30 @@ export class CoursePlanDetailsComponent implements OnInit {
           ) {
             return true;
           }
-        } else if (course.period.length === 1 && otherCourse.period.length === 3) {
+        } else if (
+          course.period.length === 1 &&
+          otherCourse.period.length === 3
+        ) {
           const otherCourseModule = otherCourse.module.split(',');
           const periodIdx = Number(course.period) - 1;
 
           if (course.module === otherCourseModule[periodIdx]) {
             return true;
           }
-        } else if (course.period.length === 3 && otherCourse.period.length === 1) {
+        } else if (
+          course.period.length === 3 &&
+          otherCourse.period.length === 1
+        ) {
           const courseModule = course.module.split(',');
           const periodIdx = Number(otherCourse.period) - 1;
 
           if (otherCourse.module === courseModule[periodIdx]) {
             return true;
           }
-        } else if (course.period === otherCourse.period && course.module === otherCourse.module) {
+        } else if (
+          course.period === otherCourse.period &&
+          course.module === otherCourse.module
+        ) {
           return true;
         }
       }
@@ -176,27 +178,6 @@ export class CoursePlanDetailsComponent implements OnInit {
       const compareModule = a.module.localeCompare(b.module);
       return compareSemester || comparePeriod || compareModule;
     });
-  }
-
-  private checkCollidingCourses(): void {
-    for (const course1 of this.selectedCourses) {
-      for (const course2 of this.selectedCourses) {
-        if (course1 === course2) {
-          continue;
-        }
-
-        if (course1.semester === course2.semester) {
-          const course1Periods = course1.period.split(',');
-          const course2Periods = course2.period.split(',');
-
-          if (course1.period === course2.period) {
-            if (course1.module === course2.module) {
-              continue;
-            }
-          }
-        }
-      }
-    }
   }
 
   private moveCourseToSelected(coursePlan: CoursePlan): void {

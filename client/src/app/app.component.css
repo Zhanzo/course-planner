@@ -9,7 +9,6 @@ mat-sidenav {
 
 main {
   padding: 2em;
-  height: 90vh;
   display: flex;
   justify-content: center;
   align-items: center;

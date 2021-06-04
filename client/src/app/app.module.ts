@@ -22,6 +22,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HeaderComponent } from './navigation/header/header.component';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 import { MaterialModule } from './material.module';
 import { CourseFilterPipe } from './filters/course-filter.pipe';
@@ -46,6 +47,7 @@ import { CourseFilterPipe } from './filters/course-filter.pipe';
     DragDropModule,
     FontAwesomeModule,
     BrowserAnimationsModule,
+    ScrollingModule,
     MaterialModule,
   ],
   providers: [

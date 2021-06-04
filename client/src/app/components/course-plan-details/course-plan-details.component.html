@@ -43,38 +43,42 @@
           class="form-control"
         />
       </form>
-      <table class="table example-list">
-        <thead>
-          <tr>
-            <th scope="col">Course code</th>
-            <th scope="col">Course name</th>
-            <th scope="col">Credits</th>
-            <th scope="col">Level</th>
-            <th scope="col">Module</th>
-            <th period="col">Period</th>
-            <th scope="col">Semester</th>
-          </tr>
-        </thead>
-        <tbody
-          (cdkDropListDropped)="drop($event)"
-          [cdkDropListData]="courses"
-          cdkDropList
-          cdkDropListSortingDisabled
-        >
-          <tr
-            cdkDrag
-            *ngFor="let course of courses | coursefilter: searchText"
-            class="example-box"
+      <table class="table">
+        <cdk-virtual-scroll-viewport itemSize="100" class="course-table">
+          <thead>
+            <tr>
+              <th class="course-code" scope="col">Course code</th>
+              <th class="course-name" scope="col">Course name</th>
+              <th class="course-short" scope="col">Credits</th>
+              <th class="course-short" scope="col">Level</th>
+              <th class="course-short" scope="col">Module</th>
+              <th class="course-short" scope="col">Period</th>
+              <th class="course-short" scope="col">Semester</th>
+            </tr>
+          </thead>
+          <tbody
+            (cdkDropListDropped)="drop($event)"
+            [cdkDropListData]="courses"
+            cdkDropList
           >
-            <td>{{ course.code }}</td>
-            <td>{{ course.name }}</td>
-            <td>{{ course.credits }}</td>
-            <td>{{ course.level }}</td>
-            <td>{{ course.module }}</td>
-            <td>{{ course.period }}</td>
-            <td>{{ course.semester }}</td>
-          </tr>
-        </tbody>
+            <tr
+              cdkDrag
+              *ngFor="let course of courses | coursefilter: searchText"
+              class="example-box"
+            >
+              <td class="course-code">{{ course.code }}</td>
+              <td class="course-name">{{ course.name }}</td>
+              <td class="course-short">{{ course.credits }}</td>
+              <td class="course-short">{{ course.level }}</td>
+              <td class="course-short">{{ course.module }}</td>
+              <td class="course-short">{{ course.period }}</td>
+              <td class="course-short">{{ course.semester }}</td>
+            </tr>
+            <tr *ngIf="courses.length === 0" class="blank-row">
+              <td colspan="7"></td>
+            </tr>
+          </tbody>
+        </cdk-virtual-scroll-viewport>
       </table>
     </div>
 
@@ -89,45 +93,42 @@
           class="form-control"
         />
       </form>
-      <table class="table example-list">
-        <thead>
-          <tr>
-            <th scope="col">Course code</th>
-            <th scope="col">Course name</th>
-            <th scope="col">Credits</th>
-            <th scope="col">Level</th>
-            <th scope="col">Module</th>
-            <th period="col">Period</th>
-            <th scope="col">Semester</th>
-          </tr>
-        </thead>
-        <tbody
-          (cdkDropListDropped)="drop($event)"
-          [cdkDropListData]="selectedCourses"
-          cdkDropList
-          cdkDropListSortingDisabled
-        >
-          <tr
-            cdkDrag
-            *ngFor="
-              let course of selectedCourses | coursefilter: searchTextSelected
-            "
-            class="example-box"
-            [ngStyle]="
-              hasCollision(course)
-                ? { 'background-color': 'red' }
-                : { 'background-color': 'white' }
-            "
+      <table class="table">
+        <cdk-virtual-scroll-viewport itemSize="100" class="course-table">
+          <thead>
+            <tr>
+              <th class="course-code" scope="col">Course code</th>
+              <th class="course-name" scope="col">Course name</th>
+              <th class="course-short" scope="col">Credits</th>
+              <th class="course-short" scope="col">Level</th>
+              <th class="course-short" scope="col">Module</th>
+              <th class="course-short" scope="col">Period</th>
+              <th class="course-short" scope="col">Semester</th>
+            </tr>
+          </thead>
+          <tbody
+            (cdkDropListDropped)="drop($event)"
+            [cdkDropListData]="selectedCourses"
+            cdkDropList
           >
-            <td>{{ course.code }}</td>
-            <td>{{ course.name }}</td>
-            <td>{{ course.credits }}</td>
-            <td>{{ course.level }}</td>
-            <td>{{ course.module }}</td>
-            <td>{{ course.period }}</td>
-            <td>{{ course.semester }}</td>
-          </tr>
-        </tbody>
+            <tr
+              cdkDrag
+              *ngFor="let course of selectedCourses | coursefilter: searchText"
+              class="example-box"
+            >
+              <td class="course-code">{{ course.code }}</td>
+              <td class="course-name">{{ course.name }}</td>
+              <td class="course-short">{{ course.credits }}</td>
+              <td class="course-short">{{ course.level }}</td>
+              <td class="course-short">{{ course.module }}</td>
+              <td class="course-short">{{ course.period }}</td>
+              <td class="course-short">{{ course.semester }}</td>
+            </tr>
+            <tr *ngIf="selectedCourses.length === 0" class="blank-row">
+              <td colspan="7"></td>
+            </tr>
+          </tbody>
+        </cdk-virtual-scroll-viewport>
       </table>
     </div>
   </div>

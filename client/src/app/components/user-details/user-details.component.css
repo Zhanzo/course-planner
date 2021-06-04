@@ -32,4 +32,6 @@ h1 {
 
 .new-btn {
     margin-top: 2em;
+    display: flex;
+    justify-content: center;
 }
