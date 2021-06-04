@@ -19,13 +19,13 @@ import { CoursePlanDetailsComponent } from './course-plan-details.component';
 const dummyCourses: Course[] = [
   {
     id: 1,
-    code: 'TDDD27',
-    name: 'Advanced Web Programming',
+    code: 'TDDD38',
+    name: 'Advanced Programming in C++',
     credits: 6,
-    period: '2',
-    semester: '2',
+    period: '1,2',
+    semester: '1',
     level: 'A1X',
-    module: '3',
+    module: '2,2',
   },
   {
     id: 2,
@@ -39,13 +39,13 @@ const dummyCourses: Course[] = [
   },
   {
     id: 3,
-    code: 'TDDD38',
-    name: 'Advanced Programming in C++',
+    code: 'TDDD27',
+    name: 'Advanced Web Programming',
     credits: 6,
-    period: '1,2',
-    semester: '1',
+    period: '2',
+    semester: '2',
     level: 'A1X',
-    module: '2,2',
+    module: '3',
   },
 ];
 const dummyCoursePlan: CoursePlan = {
