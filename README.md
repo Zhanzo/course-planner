@@ -5,6 +5,8 @@
 https://www.youtube.com/watch?v=PYjJgWbJo80&t=1s
 
 ## Individual screencasts
+### Somaye Gharedaghi
+https://youtu.be/o_oTPatQmhk
 
 ### Robin Andersson
 
